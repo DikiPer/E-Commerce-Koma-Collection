@@ -74,6 +74,7 @@ class ProductController extends Controller
         }
 
         $product->save();
+        // dd($product);
         return redirect('/product')->with('success', 'Product has been added');
     }
 

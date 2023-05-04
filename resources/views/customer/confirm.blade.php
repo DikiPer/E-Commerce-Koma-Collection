@@ -6,20 +6,35 @@
             <div class="row">
                 <h2 class="text-center mb-5">Checkout Page</h2>
                 <div class="col-md-7">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="block billing-details">
                         <h4 class="widget-title">Information Details</h4>
                         <form action="{{ route('store.checkout') }}" method="POST" class="checkout-form">
                             @csrf
                             @method('POST')
                             <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" class="form-control" id="name"
+                                    placeholder="Your Name" value="{{ $orders['name'] }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="contact">Contact</label>
-                                <input type="text" class="form-control" id="contact" placeholder="" name="email"
-                                    value="{{ Auth::user()->email }}">
+                                <input type="text" class="form-control" id="contact" placeholder="" name="contact"
+                                    value="{{ $orders['no_tlp'] }}">
                             </div>
                             <div class="form-group">
                                 <label for="shipto">Ship to</label>
                                 <input type="text" class="form-control" id="shipto" name="shipto"
-                                    value="{{ Auth::user()->address }}">
+                                    value="{{ $orders['alamat'] . ' , Kec.' . $orders['kecamatan'] . ' , Kota ' . $city->name . ', ' . $province->name . ' ' . $orders['kode_pos'] }}">
                             </div>
                             <p style="color: red">*Cek kembali data anda</p>
 
@@ -58,28 +73,26 @@
 
                                                 <h5>
                                                     <span id="productName">{{ $details['name'] }}</span> <input
-                                                        type="hidden" name="nama_produk[{{ $id }}]"
+                                                        type="hidden" name="product_name[{{ $id }}]"
                                                         value="{{ $details['name'] }}">
                                                 </h5>
                                                 <p class="price" id="productQuantity">{{ $details['quantity'] }} Pcs</p>
-                                                <input type="hidden" name="jumlah[{{ $id }}]"
+                                                <input type="hidden" name="qty[{{ $id }}]"
                                                     value="{{ $details['quantity'] }}">
                                                 <p class="price" id="productPrice">IDR
                                                     {{ number_format($details['price']) }}</p>
-                                                <input type="hidden" name="harga[{{ $id }}]"
+                                                <input type="hidden" name="price[{{ $id }}]"
                                                     value="{{ $details['price'] }}">
                                                 <input type="hidden" name="size[{{ $id }}]"
                                                     value="{{ $details['size'] }}">
-
+                                                <input type="hidden" name="discount" value="{{ $details['discount'] }}">
+                                                <input type="hidden" name="disc_price" value="">
+                                                <input type="hidden" name="total_qty" value="{{ $totalQuantity }}">
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
                             @endif
-                            <input type="hidden" name="name" id="name" value="{{ Auth::user()->name }}">
-                            <input type="hidden" name="email" id="email" value="{{ Auth::user()->email }}">
-                            <input type="hidden" name="phone" id="phone" value="{{ Auth::user()->phone }}">
-                            <input type="hidden" name="address" id="address" value="{{ Auth::user()->address }}">
                             <div class="discount-code">
                                 <span>Total quantity : {{ $totalQuantity }} Pcs</span>
                             </div>
@@ -89,23 +102,22 @@
                                     <span class="price" id="subtotal">IDR {{ number_format($total) }}</span> <input
                                         type="hidden" name="subtotal" value="{{ $total }}">
                                 </li>
-                                <input type="hidden" name="shipping" value="JNE">
-                                <input type="hidden" name="code" value="YES">
                                 <li>
                                     <span>Shipping:</span>
                                     <span id="shippingCost">0</span>
-                                    <input type="hidden" name="shipping_cost" id="shippingCostInput" value="10000">
-
+                                    <input type="hidden" name="shippingserve" id="shippingServiceInput" value="">
+                                    <input type="hidden" name="shippingcost" id="shippingCostInput" value="">
+                                    <input type="hidden" name="shippingcode" id="shippingCodeInput" value="">
                                 </li>
                             </ul>
                             <div class="summary-total">
                                 <span for="total">Total</span>
                                 <span id="totalPrice">0</span>
-                                <input type="hidden" name="totalPrice" id="totalPrice">
+                                <input type="hidden" name="total_price" id="totalPriceInput" value="">
                             </div>
                         </div>
                         <input type="hidden" name="status" value="open">
-                        <button class="btn btn-main mt-20 btn-check" id="submitBtn">Continue to Payment</button>
+                        <button class="btn btn-main mt-20 btn-check" id="continueButton">Continue to Payment</button>
                         </form>
                     </div>
                 </div>
@@ -123,44 +135,31 @@
         let ongkirData = JSON.parse(localStorage.getItem('ongkirData'));
         if (ongkirData) {
             for (let i = 0; i < ongkirData.length; i++) {
-                $('#ongkir').append('<input type="radio" name="shipping" onchange="calculateTotal()" value="' + ongkirData[
-                        i]
-                    .cost +
-                    '" data-cost="' + ongkirData[i].cost + '" class="list-group-item">' + ongkirData[i].code +
+                $('#ongkir').append('<input type="radio" name="shipping" onchange="calculateTotal()" value="' +
+                    ongkirData[i].cost +
+                    '" data-cost="' + ongkirData[i].cost + '" data-code="' + ongkirData[i].code + '" data-service="' +
+                    ongkirData[i].service + '" class="list-group-item">' + ongkirData[i].code +
                     ' : <strong>' + ongkirData[i].service + '</strong> - Rp. ' + ongkirData[i].cost + ' (' + ongkirData[
                         i].etd + ' hari)');
             }
-        }
 
-        // mengambil data shipping dan memasukan kedalam form //
-        function get() {
-            let selectedCost = $('input[name="shipping_cost"]:checked').data('cost');
-            $('#shippingCost').text('IDR. ' + selectedCost);
-            $('#shippingCostInput').val(selectedCost);
         }
 
         // hitung total harga //
         function calculateTotal() {
             let subtotal = <?php echo $total; ?>;
             let shippingCost = parseFloat($('input[name="shipping"]:checked').val());
+            let shippingCode = $('input[name="shipping"]:checked').data('code');
+            let shippingService = $('input[name="shipping"]:checked').data('service');
             let total = subtotal + shippingCost;
             $('#subtotal').text('IDR ' + subtotal.toLocaleString('id-ID'));
             $('#shippingCost').text('IDR ' + shippingCost.toLocaleString('id-ID'));
+            $('#shippingCostInput').val(shippingCost);
+            $('#shippingCodeInput').val(shippingCode);
+            $('#shippingServiceInput').val(shippingService);
+            $('#totalPriceInput').val(total);
             $('#totalPrice').text('IDR ' + total.toLocaleString('id-ID'));
         }
-
-        // Mendapatkan nilai dari session storage
-        let country = sessionStorage.getItem('country');
-        let name = sessionStorage.getItem('name');
-        let no_tlp = sessionStorage.getItem('no_tlp');
-        let alamat = sessionStorage.getItem('alamat');
-        let kecamatan = sessionStorage.getItem('kecamatan');
-        let kode_pos = sessionStorage.getItem('kode_pos');
-        let city_origin = sessionStorage.getItem('city_origin');
-        let province_destination = sessionStorage.getItem('province_destination');
-        let city_destination = sessionStorage.getItem('city_destination');
-        let courier = sessionStorage.getItem('courier');
-        let weight = sessionStorage.getItem('weight');
     </script>
 
 @endsection

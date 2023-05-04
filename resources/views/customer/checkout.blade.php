@@ -17,7 +17,8 @@
                         @endif
                         <div class="block billing-details">
                             <h4 class="widget-title">Information Details</h4>
-                            <form action="{{ route('orders.store') }}" method="POST" class="checkout-form">
+                            <form action="{{ route('orders.store') }}" method="post" class="checkout-form">
+                                @csrf
                                 <div class="form-group">
                                     <label for="country">Country</label>
                                     <input type="text" class="form-control" id="country" placeholder="Indonesia"
@@ -89,7 +90,7 @@
                                                 @endphp
                                                 <input type="hidden" name="product_id" value="{{ $id_product }}">
                                                 <input type="hidden" name="user_id" value="{{ $userId }}">
-                                                <input type="hidden" name="name" value="{{ Auth::user()->email }}">
+                                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                                                 <input type="hidden" name="quantity" value="{{ $totalQuantity }}">
                                                 <input type="hidden" name="total" value="{{ $total }}">
                                             @endforeach
@@ -230,88 +231,8 @@
                         '<option value="">-- pilih kota tujuan --</option>');
                 }
             });
+
             //ajax check ongkir
-            let isProcessing = false;
-            $('.btn-check').click(function(e) {
-                e.preventDefault();
-
-                let token = $("meta[name='csrf-token']").attr("content");
-                let country = $('#country').val();
-                let name = $('#name').val();
-                let no_tlp = $('#no_tlp').val();
-                let alamat = $('#alamat').val();
-                let kecamatan = $('#kecamatan').val();
-                let kode_pos = $('#kode_pos').val();
-                let city_origin = $('#city_origin').val();
-                let province_destination = $('select[name=province_destination]').val();
-                let city_destination = $('select[name=city_destination]').val();
-                let courier = $('select[name=courier]').val();
-                let weight = $('#weight').val();
-
-                if (isProcessing) {
-                    return;
-                }
-                isProcessing = true;
-                jQuery.ajax({
-                    url: "/ongkir",
-                    data: {
-                        _token: token,
-                        country: country,
-                        name: name,
-                        no_tlp: no_tlp,
-                        alamat: alamat,
-                        kecamatan: kecamatan,
-                        kode_pos: kode_pos,
-                        city_origin: city_origin,
-                        province_destination: province_destination,
-                        city_destination: city_destination,
-                        courier: courier,
-                        weight: weight,
-                    },
-                    dataType: "JSON",
-                    type: "POST",
-                    success: function(response) {
-                        isProcessing = false;
-                        if (response) {
-                            $('#ongkir').empty();
-                            $('.ongkir').addClass('d-block');
-                            let ongkirData = [];
-                            $.each(response[0]['costs'], function(key, value) {
-                                ongkirData.push({
-                                    code: response[0].code.toUpperCase(),
-                                    service: value.service,
-                                    cost: value.cost[0].value,
-                                    etd: value.cost[0].etd
-                                });
-                                $('#ongkir').append('<li class="list-group-item">' +
-                                    response[0].code.toUpperCase() + ' : <strong>' +
-                                    value.service + '</strong> - Rp. ' + value.cost[
-                                        0].value + ' (' + value.cost[0].etd +
-                                    ' hari)</li>');
-                            });
-                            localStorage.setItem('ongkirData', JSON.stringify(ongkirData));
-                            // Set session variables
-                            sessionStorage.setItem('country', country);
-                            sessionStorage.setItem('name', name);
-                            sessionStorage.setItem('no_tlp', no_tlp);
-                            sessionStorage.setItem('alamat', alamat);
-                            sessionStorage.setItem('kecamatan', kecamatan);
-                            sessionStorage.setItem('kode_pos', kode_pos);
-                            sessionStorage.setItem('city_origin', city_origin);
-                            sessionStorage.setItem('province_destination',
-                                province_destination);
-                            sessionStorage.setItem('city_destination', city_destination);
-                            sessionStorage.setItem('courier', courier);
-                            sessionStorage.setItem('weight', weight);
-
-                            console.log(response);
-                            window.location.href = "/confirm";
-                        }
-                    }
-                });
-
-            });
-
         });
     </script>
 @endsection
