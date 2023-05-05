@@ -23,9 +23,6 @@ return new class extends Migration
             $table->string('disc_price')->nullable();
             $table->string('qty');
             $table->string('price');
-            $table->string('total_qty');
-            $table->float('subtotal');
-            $table->float('total_price');
             $table->timestamps();
         });
     }

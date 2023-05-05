@@ -132,18 +132,49 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script>
         // mengambil data hitung ongkir dari halaman sebelumnya yaitu checkout //
-        let ongkirData = JSON.parse(localStorage.getItem('ongkirData'));
-        if (ongkirData) {
-            for (let i = 0; i < ongkirData.length; i++) {
-                $('#ongkir').append('<input type="radio" name="shipping" onchange="calculateTotal()" value="' +
-                    ongkirData[i].cost +
-                    '" data-cost="' + ongkirData[i].cost + '" data-code="' + ongkirData[i].code + '" data-service="' +
-                    ongkirData[i].service + '" class="list-group-item">' + ongkirData[i].code +
-                    ' : <strong>' + ongkirData[i].service + '</strong> - Rp. ' + ongkirData[i].cost + ' (' + ongkirData[
-                        i].etd + ' hari)');
-            }
+        // let ongkirData = JSON.parse(localStorage.getItem('ongkirData'));
+        // if (ongkirData) {
+        //     for (let i = 0; i < ongkirData.length; i++) {
+        //         $('#ongkir').append('<input type="radio" name="shipping" onchange="calculateTotal()" value="' +
+        //             ongkirData[i].cost +
+        //             '" data-cost="' + ongkirData[i].cost + '" data-code="' + ongkirData[i].code + '" data-service="' +
+        //             ongkirData[i].service + '" class="list-group-item">' + ongkirData[i].code +
+        //             ' : <strong>' + ongkirData[i].service + '</strong> - Rp. ' + ongkirData[i].cost + ' (' + ongkirData[
+        //                 i].etd + ' hari)');
+        //     }
 
-        }
+        // }
+
+        $.ajax({
+            url: '/ongkirs',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data)
+                // mengosongkan elemen #ongkir sebelum menambahkan radio button
+                $('#ongkir').empty();
+
+                // menambahkan radio button untuk setiap data yang diperoleh dari database
+                for (let i = 0; i < data.length; i++) {
+                    $('#ongkir').append(
+                        '<input type="radio" name="shipping" onchange="calculateTotal()" value="' +
+                        data[i].cost[0].value +
+                        '" data-cost="' + data[i].cost[0].value + '" data-code="' + data[i].service +
+                        '" data-service="' +
+                        data[i].description + '" class="list-group-item">' + data[i].description +
+                        ' - <strong>' + data[i].service + '</strong> - Rp. ' + data[i].cost[0]
+                        .value +
+                        ' (' +
+                        data[i].cost[0]
+                        .etd + ' hari)');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // menangani error jika terjadi error saat melakukan request ajax
+                console.log(errorThrown);
+            }
+        });
+
 
         // hitung total harga //
         function calculateTotal() {

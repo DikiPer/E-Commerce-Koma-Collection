@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('shippingcode');
             $table->string('shippingcost');
             $table->unsignedInteger('id_user');
+            $table->string('total_qty');
+            $table->double('subtotal');
+            $table->double('total_price');
+            $table->string('status');
             $table->timestamps();
         });
     }

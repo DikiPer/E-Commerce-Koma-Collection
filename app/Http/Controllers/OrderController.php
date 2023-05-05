@@ -89,11 +89,20 @@ class OrderController extends Controller
         $cart = session()->get('cart');
         $orders = session()->get('order');
         $ongkir = $orders['cost'][0]['costs'];
-        // dd($orders);
+        $collection = collect($cart);
         $province = Province::find($orders['province_destination']);
         $city = City::where('city_id', $orders['city_destination'])->get()[0];
         $produk = Product::all();
-        return view('customer.confirm', compact('cart', 'produk', 'orders', 'city', 'province', 'ongkir'));
+        return view('customer.confirm', compact('cart', 'produk', 'orders', 'city', 'province'));
+    }
+
+    public function orders()
+    {
+        $orders = session()->get('order');
+        $ongkir = $orders['cost'][0]['costs'];
+        // dd($ongkir);
+
+        return response()->json($ongkir);
     }
 
 
@@ -116,7 +125,7 @@ class OrderController extends Controller
             // Jika validasi berhasil, lanjutkan proses checkout
 
             $id_user = Auth::id();
-
+            $orders = session()->get('order');
             // Simpan data ke dalam table orders
             $order = new Order;
             $order->name = $request->name;
@@ -127,23 +136,27 @@ class OrderController extends Controller
             $order->shippingcode = $request->shippingcode;
             $order->shippingcost = $request->shippingcost;
             $order->id_user = $id_user;
+            $order->total_qty = $request->total_qty;
+            $order->subtotal = $request->subtotal;
+            $order->total_price = $request->total_price;
+            $order->status = $request->status;
             $order->save();
         }
         // Simpan data ke dalam table order_products
         $cart = session()->get('cart');
-        foreach ($cart as $item) {
+        $id_order = Order::latest()->first();
+        // dd($id_order->id);
+        // dd($id_order);
+        foreach ($cart as $detail) {
             $order_product = new OrderProduct;
-            $order_product->order_id = $order->id;
-            $order_product->product_name = $item['product_name'];
-            $order_product->size = $item['size'];
-            $order_product->discount = $item['discount'];
-            $order_product->disc_price = $item['disc_price'];
-            $order_product->qty = $item['qty'];
-            $order_product->price = $item['price'];
-            $order_product->total_qty = $item['total_qty'];
-            $order_product->subtotal = $item['subtotal'];
-            $order_product->total_price = $item['total_price'];
-            $order_product->status = $request->status;
+            $order_product->id_order = $id_order->id;
+            $order_product->id_produk = $detail['product_id'];
+            $order_product->product_name = $detail['name'];
+            $order_product->size = $detail['size'];
+            $order_product->discount = $detail['discount'];
+            $order_product->disc_price = NULL;
+            $order_product->qty = $detail['quantity'];
+            $order_product->price = $detail['price'];
             $order_product->save();
         }
 
@@ -155,7 +168,7 @@ class OrderController extends Controller
 
     public function clear_payment()
     {
-        $payment = Order::findOrFail();
+        $payment = Order::all();
         return view('customer.clear_payment', compact('payment'));
     }
 }

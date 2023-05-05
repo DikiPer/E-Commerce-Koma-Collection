@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::get('/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
     Route::post('/add_orders', [OrderController::class, 'add_order'])->name('store.checkout');
     Route::get('/clear_payment', [OrderController::class, 'clear_payment'])->name('clear.payment');
-
+    Route::get('/ongkirs', [OrderController::class, 'orders'])->name('ongkir.order');
     // End Order //
 
     // Detail Produk //
