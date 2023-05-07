@@ -9,8 +9,10 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Province;
+use Illuminate\Support\Str;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -100,7 +102,6 @@ class OrderController extends Controller
     {
         $orders = session()->get('order');
         $ongkir = $orders['cost'][0]['costs'];
-        // dd($ongkir);
 
         return response()->json($ongkir);
     }
@@ -111,7 +112,7 @@ class OrderController extends Controller
 
         // Validasi data formulir checkout
         $validator = Validator::make($request->all(), [
-            'shippingserve' => 'required',
+            'shippingserve' => 'required'
         ], [
             'shippingserve.required' => 'Please select a shipping method'
         ]);
@@ -125,12 +126,17 @@ class OrderController extends Controller
             // Jika validasi berhasil, lanjutkan proses checkout
 
             $id_user = Auth::id();
+            $user = Auth::user();
+            $address = $user->address;
+            $id_pesanan = Str::random(3) . mt_rand(1000, 5000);
+
             $orders = session()->get('order');
             // Simpan data ke dalam table orders
             $order = new Order;
+            $order->id_pesanan = $id_pesanan;
             $order->name = $request->name;
             $order->contact = $request->contact;
-            $order->alamat = $request->alamat;
+            $order->alamat = $address;
             $order->shipto = $request->shipto;
             $order->shippingserve = $request->shippingserve;
             $order->shippingcode = $request->shippingcode;
@@ -140,8 +146,10 @@ class OrderController extends Controller
             $order->subtotal = $request->subtotal;
             $order->total_price = $request->total_price;
             $order->status = $request->status;
+            $order->payment_method = $request->payment_method;
             $order->save();
         }
+
         // Simpan data ke dalam table order_products
         $cart = session()->get('cart');
         $id_order = Order::latest()->first();
@@ -149,6 +157,7 @@ class OrderController extends Controller
         // dd($id_order);
         foreach ($cart as $detail) {
             $order_product = new OrderProduct;
+            $order_product->id_user = $id_user;
             $order_product->id_order = $id_order->id;
             $order_product->id_produk = $detail['product_id'];
             $order_product->product_name = $detail['name'];
@@ -166,9 +175,71 @@ class OrderController extends Controller
         return redirect()->route('clear.payment', compact('order'))->with('success', 'Order created successfully');
     }
 
-    public function clear_payment()
+    public function showClearPayment(Order $order)
     {
-        $payment = Order::all();
-        return view('customer.clear_payment', compact('payment'));
+        if ($order->payment_method == 'tf_bca') {
+            return view('payment.bca', [
+                'order' => $order,
+                'bankName' => 'BCA',
+                'bankAccountNumber' => '1234567890',
+                'totalPrice' => $order->total_price,
+                'totalQty' => $order->total_qty,
+                'products' => $order->order_products
+            ]);
+        } elseif ($order->payment_method == 'tf_mandiri') {
+            return view('payment.mandiri', [
+                'order' => $order,
+                'bankName' => 'Mandiri',
+                'bankAccountNumber' => '0987654321',
+                'totalPrice' => $order->total_price,
+                'totalQty' => $order->total_qty,
+                'products' => $order->order_products
+            ]);
+        } elseif ($order->payment_method == 'tf_bsi') {
+            return view('payment.bsi', [
+                'order' => $order,
+                'bankName' => 'BSI',
+                'bankAccountNumber' => '2468013579',
+                'totalPrice' => $order->total_price,
+                'totalQty' => $order->total_qty,
+                'products' => $order->order_products
+            ]);
+        } else {
+            return view('payment.unsupported', [
+                'order' => $order
+            ]);
+        }
     }
+
+    public function pesanan()
+    {
+        $user_id = Auth::id();
+        $orders = DB::table('orders')
+            ->leftJoin('order_products', 'orders.id', '=', 'order_products.id_order')
+            ->select('orders.*', 'order_products.*')
+            ->where('orders.id_user', '=', $user_id)
+            ->orderByDesc('orders.created_at')
+            ->get();
+
+        return view('customer.pesanan', ['orders' => $orders]);
+    }
+
+
+    public function details($id)
+    {
+        $order_product = OrderProduct::where('id_order', $id)->get();
+
+        return response()->json(['data' => $order_product]);
+    }
+
+
+
+    // public function pesanan($id)
+    // {
+    //     $user_id = Auth::id();
+    //     $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->get();
+    //     $order_product = OrderProduct::where('id_order', $id)->get();
+
+    //     return view('customer.pesanan', compact('orders', 'order_product'));
+    // }
 }

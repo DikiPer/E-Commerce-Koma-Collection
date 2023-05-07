@@ -9,14 +9,5 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'contact',
-        'shipto',
-        'shipping_serve',
-        'shipping_code',
-        'shipping_cost',
-        'id_order',
-        'id_user',
-    ];
+    protected $guarded = [];
 }

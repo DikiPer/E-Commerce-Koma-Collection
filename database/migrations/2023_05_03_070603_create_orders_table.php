@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('id_pesanan');
             $table->string('name');
             $table->string('contact');
             $table->string('alamat')->nullable();
@@ -26,7 +27,8 @@ return new class extends Migration
             $table->string('total_qty');
             $table->double('subtotal');
             $table->double('total_price');
-            $table->string('status');
+            $table->enum('status', ['paid', 'unpaid']);
+            $table->enum('payment_method', ['tf_mandiri', 'tf_bca', 'tf_bsi']);
             $table->timestamps();
         });
     }

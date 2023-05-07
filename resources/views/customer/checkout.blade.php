@@ -64,8 +64,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Pilih pengiriman</label>
                                     <select class="form-control kurir" name="courier">
-                                        <option value="0">-- pilih kurir --</option>
+                                        <option value="0"></option>
                                         <option value="jne">JNE</option>
                                         <option value="pos">POS</option>
                                         <option value="tiki">TIKI</option>

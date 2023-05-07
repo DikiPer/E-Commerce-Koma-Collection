@@ -12,6 +12,7 @@ use App\Http\Controllers\OngkirController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\WishListController;
+use Faker\Guesser\Name;
 use Illuminate\Http\Request;
 
 /*
@@ -71,9 +72,13 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::post('/ongkir', [OrderController::class, 'check_ongkir']);
     Route::get('/confirm', [OrderController::class, 'confirm'])->name('orders.confirm');
     Route::post('/add_orders', [OrderController::class, 'add_order'])->name('store.checkout');
-    Route::get('/clear_payment', [OrderController::class, 'clear_payment'])->name('clear.payment');
     Route::get('/ongkirs', [OrderController::class, 'orders'])->name('ongkir.order');
+    Route::get('/clear_payment/{order}', [OrderController::class, 'showClearPayment'])->name('clear.payment');
     // End Order //
+
+    // Pesanan //
+    Route::get('/pesanan', [OrderController::class, 'pesanan'])->name('cek.pesanan');
+    Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail.pesanan');
 
     // Detail Produk //
     Route::get('/detail_product/{id}', [HomeController::class, 'details'])->name('detail.product');

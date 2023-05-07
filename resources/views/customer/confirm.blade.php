@@ -31,6 +31,17 @@
                                 <input type="text" class="form-control" id="contact" placeholder="" name="contact"
                                     value="{{ $orders['no_tlp'] }}">
                             </div>
+
+                            <div class="form-group">
+                                <label for="payment">Payment</label>
+                                <select name="payment_method" id="payment" class="form-control" required>
+                                    <option value="0"></option>
+                                    <option value="tf_mandiri">Mandiri</option>
+                                    <option value="tf_bca">BCA</option>
+                                    <option value="tf_bsi">BSI</option>
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="shipto">Ship to</label>
                                 <input type="text" class="form-control" id="shipto" name="shipto"
@@ -116,7 +127,7 @@
                                 <input type="hidden" name="total_price" id="totalPriceInput" value="">
                             </div>
                         </div>
-                        <input type="hidden" name="status" value="open">
+                        <input type="hidden" name="status" value="unpaid">
                         <button class="btn btn-main mt-20 btn-check" id="continueButton">Continue to Payment</button>
                         </form>
                     </div>
@@ -131,26 +142,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script>
-        // mengambil data hitung ongkir dari halaman sebelumnya yaitu checkout //
-        // let ongkirData = JSON.parse(localStorage.getItem('ongkirData'));
-        // if (ongkirData) {
-        //     for (let i = 0; i < ongkirData.length; i++) {
-        //         $('#ongkir').append('<input type="radio" name="shipping" onchange="calculateTotal()" value="' +
-        //             ongkirData[i].cost +
-        //             '" data-cost="' + ongkirData[i].cost + '" data-code="' + ongkirData[i].code + '" data-service="' +
-        //             ongkirData[i].service + '" class="list-group-item">' + ongkirData[i].code +
-        //             ' : <strong>' + ongkirData[i].service + '</strong> - Rp. ' + ongkirData[i].cost + ' (' + ongkirData[
-        //                 i].etd + ' hari)');
-        //     }
-
-        // }
-
         $.ajax({
             url: '/ongkirs',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(data)
+                // console.log(data)
                 // mengosongkan elemen #ongkir sebelum menambahkan radio button
                 $('#ongkir').empty();
 
