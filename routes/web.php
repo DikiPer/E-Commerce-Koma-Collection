@@ -1,19 +1,20 @@
 <?php
 
+use Faker\Guesser\Name;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\HomeAdminController;
-use App\Http\Controllers\OngkirController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OngkirController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishListController;
-use Faker\Guesser\Name;
-use Illuminate\Http\Request;
+use App\Http\Controllers\HomeAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,12 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::patch('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::get('/user/detail/{id}', [UserController::class, 'show'])->name('user.show');
     Route::get('/my_profile', [UserController::class, 'profile'])->name('profile.show');
+
+    // Tabel Order //
+    Route::get('/user_order', [PesananController::class, 'index'])->name('index');
+    Route::get('/user_order/edit/{id}', [PesananController::class, 'edit'])->name('edit.pesanan');
+    Route::patch('/user_order/update/{id}', [PesananController::class, 'update'])->name('update.pesanan');
+    Route::get('/detail_order/{id}', [PesananController::class, 'details'])->name('detail.order');
 });
 
 // USER //
@@ -78,7 +85,7 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
 
     // Pesanan //
     Route::get('/pesanan', [OrderController::class, 'pesanan'])->name('cek.pesanan');
-    Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail'])->name('detail.pesanan');
+    Route::get('/detail_pesanan/{id}', [OrderController::class, 'detail_pesanan'])->name('detail.pesanan');
 
     // Detail Produk //
     Route::get('/detail_product/{id}', [HomeController::class, 'details'])->name('detail.product');

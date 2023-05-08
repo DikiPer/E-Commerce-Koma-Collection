@@ -211,35 +211,32 @@ class OrderController extends Controller
         }
     }
 
+    // public function pesanan()
+    // {
+    //     $user_id = Auth::id();
+    //     $orders = DB::table('orders')
+    //         ->leftJoin('order_products', 'orders.id', '=', 'order_products.id_order')
+    //         ->select('orders.*', 'order_products.*')
+    //         ->where('orders.id_user', '=', $user_id)
+    //         ->orderByDesc('orders.created_at')
+    //         ->get();
+
+    //     return view('customer.pesanan', ['orders' => $orders]);
+    // }
+
     public function pesanan()
     {
         $user_id = Auth::id();
-        $orders = DB::table('orders')
-            ->leftJoin('order_products', 'orders.id', '=', 'order_products.id_order')
-            ->select('orders.*', 'order_products.*')
-            ->where('orders.id_user', '=', $user_id)
-            ->orderByDesc('orders.created_at')
-            ->get();
+        $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->get();
 
         return view('customer.pesanan', ['orders' => $orders]);
     }
 
 
-    public function details($id)
+    public function detail_pesanan($id)
     {
         $order_product = OrderProduct::where('id_order', $id)->get();
 
-        return response()->json(['data' => $order_product]);
+        return view('customer.detail_pesanan', ['data' => $order_product]);
     }
-
-
-
-    // public function pesanan($id)
-    // {
-    //     $user_id = Auth::id();
-    //     $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->get();
-    //     $order_product = OrderProduct::where('id_order', $id)->get();
-
-    //     return view('customer.pesanan', compact('orders', 'order_product'));
-    // }
 }

@@ -1,20 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <section class="page-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="content">
-                        <h1 class="page-name">Pesanan</h1>
-                        <ol class="breadcrumb">
-                            <li><a href="{{ url('/') }}">Home</a></li>
-                            <li class="active">Pesanan </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <div class="page-wrapper">
         <div class="cart shopping">
             <div class="container">
@@ -27,37 +12,52 @@
                                         <thead>
                                             <tr>
                                                 <th class="">ID Order</th>
-                                                <th class="">Order Date</th>
-                                                <th class="">Total Quantity</th>
-                                                <th class="">Total Price</th>
+                                                <th class="">Product Name</th>
+                                                <th class="">Quantity</th>
+                                                <th class="">Item Price</th>
                                                 <th class="">Status</th>
                                                 <th class="">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($orders as $order)
+                                            @php
+                                                $totalQuantity = 0;
+                                                $totalPrice = 0;
+                                            @endphp
+                                            @foreach ($data as $id => $detail)
+                                                @php
+                                                    $totalQuantity += $detail->qty;
+                                                    $totalPrice += $detail->price;
+                                                @endphp
                                                 <tr class="">
+                                                    <td>{{ $detail->id_order }}</td>
                                                     <td class="">
                                                         <div class="product-info">
-                                                            <a href="">{{ $order->id_pesanan }}</a>
-
+                                                            <a href="#!">{{ $detail->product_name }}</a>
                                                         </div>
                                                     </td>
-
                                                     <td class="">
-                                                        {{ $order->created_at }}
+                                                        {{ $detail->qty }}
+                                                        Pcs
                                                     </td>
-                                                    <td>{{ $order->total_qty }} Pcs</td>
-                                                    <td class="">IDR {{ number_format($order->total_price) }}</td>
-                                                    <td class="">{{ $order->status }} </td>
+                                                    <td class="">IDR {{ number_format($detail->price) }}</td>
+                                                    <td class="">{{ $detail->size }} </td>
                                                     <td class="">
                                                         <a class="product-remove"
-                                                            href="{{ route('detail.pesanan', $order->id) }}">Detail</a>
+                                                            href="{{ route('detail.pesanan', $detail->id) }}">Remove</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
+                                            <tr>
+                                                <td>Total</td>
+                                                <td></td>
+                                                <td>{{ $totalQuantity }} Pcs</td>
+                                                <td>IDR {{ number_format($totalPrice) }}</td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                     @if (session('cart'))
@@ -69,7 +69,6 @@
                                     @else
                                         <a href="{{ url('/onsale') }}" class="btn btn-main pull-right">Shop Now</a>
                                     @endif
-
                             </div>
                         </div>
                     </div>
