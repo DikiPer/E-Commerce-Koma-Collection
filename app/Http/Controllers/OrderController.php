@@ -22,6 +22,12 @@ use Kavist\RajaOngkir\Facades\RajaOngkir;
 
 class OrderController extends Controller
 {
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'id_order', 'id_order');
+    }
+
     public function index()
     {
         $provinces = Province::pluck('name', 'province_id');
@@ -112,9 +118,13 @@ class OrderController extends Controller
 
         // Validasi data formulir checkout
         $validator = Validator::make($request->all(), [
-            'shippingserve' => 'required'
+            'shippingserve' => 'required',
+            'bukti_pembayaran' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ], [
-            'shippingserve.required' => 'Please select a shipping method'
+            'shippingserve.required' => 'Please select a shipping method',
+            'bukti_pembayaran.image' => 'The file must be an image',
+            'bukti_pembayaran.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif',
+            'bukti_pembayaran.max' => 'The image may not be greater than 2 MB'
         ]);
 
         if ($validator->fails()) {
@@ -128,7 +138,8 @@ class OrderController extends Controller
             $id_user = Auth::id();
             $user = Auth::user();
             $address = $user->address;
-            $id_pesanan = Str::random(3) . mt_rand(1000, 5000);
+            $date = date('dmY');
+            $id_pesanan = 'KOMA-' . Str::random(3) . mt_rand(1000, 5000) . '-' . $date;
 
             $orders = session()->get('order');
             // Simpan data ke dalam table orders
@@ -147,6 +158,7 @@ class OrderController extends Controller
             $order->total_price = $request->total_price;
             $order->status = $request->status;
             $order->payment_method = $request->payment_method;
+
             $order->save();
         }
 
@@ -159,6 +171,7 @@ class OrderController extends Controller
             $order_product = new OrderProduct;
             $order_product->id_user = $id_user;
             $order_product->id_order = $id_order->id;
+            $order_product->id_pesanan = $id_pesanan;
             $order_product->id_produk = $detail['product_id'];
             $order_product->product_name = $detail['name'];
             $order_product->size = $detail['size'];
@@ -166,6 +179,8 @@ class OrderController extends Controller
             $order_product->disc_price = NULL;
             $order_product->qty = $detail['quantity'];
             $order_product->price = $detail['price'];
+
+            // dd($order_product);
             $order_product->save();
         }
 
@@ -211,19 +226,6 @@ class OrderController extends Controller
         }
     }
 
-    // public function pesanan()
-    // {
-    //     $user_id = Auth::id();
-    //     $orders = DB::table('orders')
-    //         ->leftJoin('order_products', 'orders.id', '=', 'order_products.id_order')
-    //         ->select('orders.*', 'order_products.*')
-    //         ->where('orders.id_user', '=', $user_id)
-    //         ->orderByDesc('orders.created_at')
-    //         ->get();
-
-    //     return view('customer.pesanan', ['orders' => $orders]);
-    // }
-
     public function pesanan()
     {
         $user_id = Auth::id();
@@ -233,10 +235,45 @@ class OrderController extends Controller
     }
 
 
-    public function detail_pesanan($id)
+    public function detail_pesanan($id_order)
     {
-        $order_product = OrderProduct::where('id_order', $id)->get();
+        $order_product = OrderProduct::where('id_order', $id_order)->get();
 
-        return view('customer.detail_pesanan', ['data' => $order_product]);
+        return view('customer.detail_pesanan', ['data' => $order_product, 'id_order' => $id_order]);
+    }
+
+    public function edit($id_order)
+    {
+        $order = OrderProduct::where('id_order', $id_order)->distinct()->get(['id_pesanan']);
+        $order_product = OrderProduct::where('id_order', $id_order)->get();
+        $detail = Order::where('id', $id_order)->first(['status', 'total_price', 'payment_method']);
+
+        return view('customer.unggah_tf', compact('order', 'order_product', 'detail'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        $request->validate([
+            'bukti_pembayaran' => 'image|mimes:jpeg,png,jpg|max:3048',
+        ]);
+
+        // Jika ada file gambar yang diupload
+        if ($request->hasFile('bukti_pembayaran')) {
+            $image = $request->file('bukti_pembayaran');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('/storage/bukti_pembayaran'), $imageName);
+
+            // Update kolom bukti_pembayaran dalam tabel orders
+            $order->bukti_pembayaran = $imageName;
+        }
+
+        dd($order);
+
+        $order->update($request->all());
+
+        return redirect()->route('orders.index')
+            ->with('success', 'Order updated successfully');
     }
 }

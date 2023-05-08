@@ -3,8 +3,9 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <!-- Page Heading -->
-        <a href="{{ url('/add_product') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-            style="float: right"><i class="fas fa-print fa-sm text-white-50"></i> Print</a>
+        <a href="{{ url('/generate/pdf', $id_order) }}" target="_blank"
+            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="float: right; margin-right: 20px"><i
+                class="fas fa-print fa-sm text-white-50"></i> Export PDF</a>
         <h1 class="h3 mb-2 text-gray-800">Detail Orders</h1>
         @if (session('success'))
             <div class="alert alert-success text-center">

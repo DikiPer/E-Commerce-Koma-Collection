@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::get('/user_order/edit/{id}', [PesananController::class, 'edit'])->name('edit.pesanan');
     Route::patch('/user_order/update/{id}', [PesananController::class, 'update'])->name('update.pesanan');
     Route::get('/detail_order/{id}', [PesananController::class, 'details'])->name('detail.order');
+    Route::get('/generate/pdf/{id}', [PesananController::class, 'generatePDF'])->name('export.pdf');
 });
 
 // USER //
@@ -81,6 +82,8 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::post('/add_orders', [OrderController::class, 'add_order'])->name('store.checkout');
     Route::get('/ongkirs', [OrderController::class, 'orders'])->name('ongkir.order');
     Route::get('/clear_payment/{order}', [OrderController::class, 'showClearPayment'])->name('clear.payment');
+    Route::get('/unggah_bukti_bayar/edit/{id}', [OrderController::class, 'edit'])->name('edit.buktitf');
+    Route::patch('unggah_bukti_bayar/update', [OrderController::class, 'update'])->name('unggah.buktitf');
     // End Order //
 
     // Pesanan //

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->double('total_price');
             $table->enum('status', ['paid', 'unpaid']);
             $table->enum('payment_method', ['tf_mandiri', 'tf_bca', 'tf_bsi']);
+            $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
     }

@@ -15,8 +15,7 @@
                                                 <th class="">Product Name</th>
                                                 <th class="">Quantity</th>
                                                 <th class="">Item Price</th>
-                                                <th class="">Status</th>
-                                                <th class="">Actions</th>
+                                                <th class="">Size</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -30,10 +29,11 @@
                                                     $totalPrice += $detail->price;
                                                 @endphp
                                                 <tr class="">
-                                                    <td>{{ $detail->id_order }}</td>
+                                                    <td>{{ $detail->id_pesanan }}</td>
                                                     <td class="">
                                                         <div class="product-info">
-                                                            <a href="#!">{{ $detail->product_name }}</a>
+                                                            <strong>{{ $detail->product_name }}</strong>
+
                                                         </div>
                                                     </td>
                                                     <td class="">
@@ -42,17 +42,18 @@
                                                     </td>
                                                     <td class="">IDR {{ number_format($detail->price) }}</td>
                                                     <td class="">{{ $detail->size }} </td>
-                                                    <td class="">
+                                                    {{-- <td class="">
                                                         <a class="product-remove"
                                                             href="{{ route('detail.pesanan', $detail->id) }}">Remove</a>
-                                                    </td>
+                                                    </td> --}}
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td>Total</td>
                                                 <td></td>
+                                                <td>Total</td>
+
                                                 <td>{{ $totalQuantity }} Pcs</td>
                                                 <td>IDR {{ number_format($totalPrice) }}</td>
                                                 <td></td>
@@ -60,14 +61,20 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    @if (session('cart'))
-                                        @if (count(session('cart')) > 0)
-                                            <!-- Tampilkan tombol checkout -->
-                                            <a href="{{ url('/checkout') }}" class="btn btn-main pull-right">Checkout
-                                            </a>
-                                        @endif
+                                    @php
+                                        $lastOrder = \App\Models\Order::where('id_user', Auth::id())
+                                            ->latest()
+                                            ->first();
+                                    @endphp
+                                    @if ($lastOrder && $lastOrder->status == 'paid')
+                                        <!-- Tampilkan teks Kembali -->
+                                        <p>Kembali</p>
                                     @else
-                                        <a href="{{ url('/onsale') }}" class="btn btn-main pull-right">Shop Now</a>
+                                        <!-- Tampilkan tombol Unggah Bukti Pembayaran -->
+                                        <a href="{{ url('/unggah_bukti_bayar/edit', $id_order) }}"
+                                            class="btn btn-main pull-right">Unggah
+                                            Bukti
+                                            Pembayaran</a>
                                     @endif
                             </div>
                         </div>
@@ -76,5 +83,4 @@
             </div>
         </div>
     </div>
-
 @endsection

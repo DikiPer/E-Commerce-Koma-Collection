@@ -38,8 +38,8 @@
                                             @foreach ($orders as $order)
                                                 <tr class="">
                                                     <td class="">
-                                                        <div class="product-info">
-                                                            <a href="">{{ $order->id_pesanan }}</a>
+                                                        <div class="product-info" style="font-size: 12px">
+                                                            <p><strong>{{ $order->id_pesanan }}</strong></p>
 
                                                         </div>
                                                     </td>
