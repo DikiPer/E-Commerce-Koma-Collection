@@ -173,26 +173,39 @@
                     </ul>
                 </li><!-- / Search -->
                 <!-- Login -->
-
                 @if (Auth::check() && Auth::user()->isUser())
-                    <li class="dropdown dropdown-slide">
+                    <li class="dropdown cart-nav dropdown-slide">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
                                 class="fa fa-user"></i></a>
-                        <ul class="dropdown-menu dropdown">
+                        <div class="dropdown-menu cart-dropdown">
+                            <!-- Cart Item -->
                             <div class="media">
-                                <img src="{{ asset('storage/avatar/' . Auth::user()->avatar) }}" alt=""
-                                    class="media-object rounded"
-                                    style="width: 90px;>
-                                        <h5 class="media-heading">Welcome,
-                                {{ Auth::user()->name }} </h5>
+                                <a class="pull-left" href="#!">
+                                    <img class="media-object" style="border-radius: 50%; width: 50px; height: 50px"
+                                        src="{{ asset('storage/avatar/' . Auth::user()->avatar) }}" alt="image" />
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading"><a href="#!">{{ Auth::user()->name }}</a>
+                                    </h4>
+                                    <div class="cart-price">
+                                        <span>{{ Auth::user()->email }}</span>
+                                    </div>
+                                    <h5><strong>{{ Auth::user()->username }}</strong>
+                                    </h5>
+                                    <a href="/logout"
+                                        onclick="event.preventDefault(); document.getElementById('logout').submit()"
+                                        class="remove"><i class="fa fa-power-off"></i> Logout</a>
 
+                                    <form action="/logout" method="POST" id="logout">@csrf</form>
+                                </div>
+                            </div><!-- / Cart Item -->
+                            <div class="cart-summary">
                             </div>
-                            <li>
-                                <a href="/logout"
-                                    onclick="event.preventDefault(); document.getElementById('logout').submit()"
-                                    class="nav-link"><i class="fa fa-power-off"></i> Logout</a>
-                            </li>
-                            <form action="/logout" method="POST" id="logout">@csrf</form>
+                            <ul class="text-center cart-buttons">
+                                <li><a href="{{ route('cek.pesanan') }}" class="btn btn-small">Pesanan</a></li>
+
+                                <li><a href="{{ url('/detail_user', Auth::user()->id) }}"
+                                        class="btn btn-small btn-solid-border">Profile</a></li>
                     </li>
                     </ul>
                     </li>

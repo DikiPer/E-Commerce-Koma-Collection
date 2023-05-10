@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24564b88ad6ee1f61bdd3945178a4a90",
+    "content-hash": "709fc2210c4fd050758780a1f8152214",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1421,16 +1421,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.17.1",
+            "version": "v1.17.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "76908639d6c58a4996ce8bbacea9ec7f610b2ec6"
+                "reference": "fc4b9b00b0d657dd035751b286f412976596ba32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/76908639d6c58a4996ce8bbacea9ec7f610b2ec6",
-                "reference": "76908639d6c58a4996ce8bbacea9ec7f610b2ec6",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/fc4b9b00b0d657dd035751b286f412976596ba32",
+                "reference": "fc4b9b00b0d657dd035751b286f412976596ba32",
                 "shasum": ""
             },
             "require": {
@@ -1481,7 +1481,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2023-04-19T15:48:59+00:00"
+            "time": "2023-04-26T13:35:07+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2476,6 +2476,135 @@
                 "source": "https://github.com/Masterminds/html5-php/tree/2.8.0"
             },
             "time": "2023-04-26T07:27:39+00:00"
+        },
+        {
+            "name": "midtrans/midtrans-php",
+            "version": "2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Midtrans/midtrans-php.git",
+                "reference": "a1ad0c824449ca8c68c4cf11b3417ad518311d2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Midtrans/midtrans-php/zipball/a1ad0c824449ca8c68c4cf11b3417ad518311d2b",
+                "reference": "a1ad0c824449ca8c68c4cf11b3417ad518311d2b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.*",
+                "psy/psysh": "0.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Midtrans\\": "Midtrans/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andri Setiawan",
+                    "email": "andri.setiawan@veritrans.co.id"
+                },
+                {
+                    "name": "Alvin Litani",
+                    "email": "alvin.litani@veritrans.co.id"
+                },
+                {
+                    "name": "Ismail Faruqi",
+                    "email": "ismail.faruqi@veritrans.co.id"
+                }
+            ],
+            "description": "PHP Wrapper for Midtrans Payment API.",
+            "homepage": "https://midtrans.com",
+            "support": {
+                "issues": "https://github.com/Midtrans/midtrans-php/issues",
+                "source": "https://github.com/Midtrans/midtrans-php/tree/2.5.2"
+            },
+            "time": "2021-08-23T08:52:05+00:00"
+        },
+        {
+            "name": "milon/barcode",
+            "version": "10.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milon/barcode.git",
+                "reference": "42bb0a40a06de6e11ee4743a31aa8f7500b3a65a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milon/barcode/zipball/42bb0a40a06de6e11ee4743a31aa8f7500b3a65a",
+                "reference": "42bb0a40a06de6e11ee4743a31aa8f7500b3a65a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0|^8.0|^9.0|^10.0",
+                "php": "^7.3 | ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Milon\\Barcode\\BarcodeServiceProvider"
+                    ],
+                    "aliases": {
+                        "DNS1D": "Milon\\Barcode\\Facades\\DNS1DFacade",
+                        "DNS2D": "Milon\\Barcode\\Facades\\DNS2DFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Milon\\Barcode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nuruzzaman Milon",
+                    "email": "contact@milon.im"
+                }
+            ],
+            "description": "Barcode generator like Qr Code, PDF417, C39, C39+, C39E, C39E+, C93, S25, S25+, I25, I25+, C128, C128A, C128B, C128C, 2-Digits UPC-Based Extention, 5-Digits UPC-Based Extention, EAN 8, EAN 13, UPC-A, UPC-E, MSI (Variation of Plessey code)",
+            "keywords": [
+                "CODABAR",
+                "CODE 128",
+                "CODE 39",
+                "barcode",
+                "datamatrix",
+                "ean",
+                "laravel",
+                "pdf417",
+                "qr code",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/milon/barcode/issues",
+                "source": "https://github.com/milon/barcode/tree/10.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/tomilon",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/milon",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-01-31T09:47:59+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -6824,23 +6953,23 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.21.5",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "27af207bb1c53faddcba34c7528b3e969f6a646d"
+                "reference": "923e1e112b6a8598664dbb0ee79dd3137f1c9d56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/27af207bb1c53faddcba34c7528b3e969f6a646d",
-                "reference": "27af207bb1c53faddcba34c7528b3e969f6a646d",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/923e1e112b6a8598664dbb0ee79dd3137f1c9d56",
+                "reference": "923e1e112b6a8598664dbb0ee79dd3137f1c9d56",
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "^8.0|^9.0|^10.0",
                 "illuminate/contracts": "^8.0|^9.0|^10.0",
                 "illuminate/support": "^8.0|^9.0|^10.0",
-                "php": "^7.3|^8.0",
+                "php": "^8.0",
                 "symfony/yaml": "^6.0"
             },
             "require-dev": {
@@ -6885,7 +7014,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2023-04-24T13:29:38+00:00"
+            "time": "2023-05-04T14:52:56+00:00"
         },
         {
             "name": "mockery/mockery",

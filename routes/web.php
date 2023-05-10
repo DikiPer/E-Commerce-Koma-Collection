@@ -15,6 +15,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishListController;
 use App\Http\Controllers\HomeAdminController;
+use App\Models\OrderProduct;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,7 +85,8 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::get('/ongkirs', [OrderController::class, 'orders'])->name('ongkir.order');
     Route::get('/clear_payment/{order}', [OrderController::class, 'showClearPayment'])->name('clear.payment');
     Route::get('/unggah_bukti_bayar/edit/{id}', [OrderController::class, 'edit'])->name('edit.buktitf');
-    Route::patch('unggah_bukti_bayar/update', [OrderController::class, 'update'])->name('unggah.buktitf');
+    Route::post('/unggah_bukti_bayar/update/{id}', [OrderController::class, 'update'])->name('update.payment');
+
     // End Order //
 
     // Pesanan //
@@ -99,7 +102,12 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::delete('/wishlist/{id}', [WishListController::class, 'destroy'])->name('wishlist.destroy');
     Route::post('/add_wishlist/{id}', [WishListController::class, 'store'])->name('wishlist.store');
 });
+// end wishlist //
 
-    // end wishlist //
+// Detail User //
+Route::get('/detail_user/{id}', [UserController::class, 'detail_user'])->name('detail.profile');
+Route::get('/edit_user/{id}', [UserController::class, 'edit_user'])->name('edit.profile');
+Route::patch('/edit_user/update/{id}', [UserController::class, 'update_profile'])->name('update.profile');
+    // End User //
 
     // END USER //

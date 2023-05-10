@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -138,5 +139,58 @@ class UserController extends Controller
     public function profile()
     {
         return view('users.my_profile');
+    }
+
+    public function detail_user($id)
+    {
+        $user = User::find($id);
+
+
+        return view('customer.detail_user', compact('user'));
+    }
+
+    public function edit_user($id)
+    {
+        $user = User::find($id);
+
+        return view('customer.edit_user', compact('user'));
+    }
+
+    public function update_profile(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users,username,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+
+        $user = User::find($id);
+        $user->name = $request->get('name');
+        $user->username = $request->get('username');
+        $user->email = $request->get('email');
+        $user->phone = $request->get('phone');
+        $user->address = $request->get('address');
+
+        if ($request->hasFile('avatar')) {
+            $request->validate([
+                'avatar' => 'required|image|mimes:jpeg,png,jpg|max:3048',
+            ]);
+
+            if ($request->hasFile('avatar')) {
+                $currentImage = $user->avatar;
+                if ($currentImage != "user.png") {
+                    unlink(public_path('/storage/avatar/' . $currentImage));
+                }
+                $imageName = $request->username . '-' . $request->id . '.' . $request->avatar->getClientOriginalExtension();
+                $request->avatar->move(public_path('/storage/avatar'), $imageName);
+                $user->avatar = $imageName;
+            }
+        }
+        // dd($user);
+        $user->save();
+
+        return redirect()->route('detail.profile', ['id' => $user->id])->with('success', 'User has been updated');
     }
 }

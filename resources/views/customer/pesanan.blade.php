@@ -27,8 +27,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="">ID Order</th>
-                                                <th class="">Order Date</th>
-                                                <th class="">Total Quantity</th>
+                                                <th class="">Date</th>
+                                                <th class="">Total Qty</th>
                                                 <th class="">Total Price</th>
                                                 <th class="">Status</th>
                                                 <th class="">Actions</th>
@@ -45,7 +45,7 @@
                                                     </td>
 
                                                     <td class="">
-                                                        {{ $order->created_at }}
+                                                        {{ $order->created_at->format('d-M-Y') }}
                                                     </td>
                                                     <td>{{ $order->total_qty }} Pcs</td>
                                                     <td class="">IDR {{ number_format($order->total_price) }}</td>
@@ -60,15 +60,11 @@
                                         <tfoot>
                                         </tfoot>
                                     </table>
-                                    @if (session('cart'))
-                                        @if (count(session('cart')) > 0)
-                                            <!-- Tampilkan tombol checkout -->
-                                            <a href="{{ url('/checkout') }}" class="btn btn-main pull-right">Checkout
-                                            </a>
-                                        @endif
-                                    @else
-                                        <a href="{{ url('/onsale') }}" class="btn btn-main pull-right">Shop Now</a>
-                                    @endif
+                                    <a href="{{ url('/shop') }}" class="btn btn-main pull-right">Shop Now</a>
+
+                                    <div class="text-right">
+                                        {{ $orders->links() }}
+                                    </div>
 
                             </div>
                         </div>
@@ -77,5 +73,4 @@
             </div>
         </div>
     </div>
-
 @endsection

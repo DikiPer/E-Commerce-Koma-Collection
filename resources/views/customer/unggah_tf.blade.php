@@ -6,9 +6,14 @@
                 <div class="col-md-6 col-md-offset-3">
                     <div class="block text-center">
                         <h2 class="text-center">Unggah bukti pembayaran</h2>
-                        <form class="text-left clearfix" action="{{ route('login') }}" method="POST">
+                        <form class="text-left clearfix" action="{{ url('/unggah_bukti_bayar/update', $detail->id) }}"
+                            method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('POST')
                             <div class="text-center">
+                                <div style="max-width: 100%; overflow-x: auto;">
+                                    {!! $barcode !!}
+                                </div>
                                 @foreach ($order as $item)
                                     <h5>ID Order : {{ $item->id_pesanan }}</h5>
                                 @endforeach
@@ -36,7 +41,7 @@
                             @endphp
                             <h6>Payment Method : {{ $payment_text }}</h6>
                             <div class="form-group">
-                                <input type="file" name="bukti_pembayaran" class="form-control">
+                                <input type="file" name="bukti_pembayaran" class="form-control-file">
                             </div>
                             <p class="mt-20 text-center" style="color: red"> *Ukuran foto maksimal 2mb</p>
                             <p class="mt-20 text-center" style="color: red; margin-top: -20px; margin-bottom: -10px"> *File

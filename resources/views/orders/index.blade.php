@@ -29,14 +29,15 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="dataProduct" class="table table-striped table-bordered" width="100%">
+                    <table id="dataProduct" class="table table-striped table-bordered" width="100%"
+                        style="font-size: 13px">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>ID Order</th>
                                 <th>Total Price</th>
-                                <th>Contact</th>
+                                <th>Payment</th>
                                 <th>Status</th>
                                 <th>Action</th>
                                 <th>Action</th>
@@ -48,7 +49,7 @@
                                 <th>Name</th>
                                 <th>ID Order</th>
                                 <th>Total Price</th>
-                                <th>Contact</th>
+                                <th>Payment</th>
                                 <th>Status</th>
                                 <th>Action</th>
                                 <th>Action</th>
@@ -61,7 +62,11 @@
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->id_pesanan }}</td>
                                     <td>IDR {{ number_format($product->total_price) }}</td>
-                                    <td>{{ $product->contact }}</td>
+                                    <td><img src="{{ asset('/storage/bukti_pembayaran/' . $product->bukti_pembayaran) }}"
+                                            alt="" width="100%" data-toggle="modal" data-target="#modal-image"
+                                            data-src="{{ asset('/storage/bukti_pembayaran/' . $product->bukti_pembayaran) }}">
+                                    </td>
+
                                     <td>{{ $product->status }}</td>
                                     <td>
                                         <a href="{{ route('edit.pesanan', $product->id) }}" class="btn btn-warning"><i
@@ -78,10 +83,36 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modal-image" tabindex="-1" role="dialog" aria-labelledby="modal-image-label"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-image-label">Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modal-image-placeholder" src="" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
     <!-- /.container-fluid -->
 
     </div>
     <!-- End of Main Content -->
+    <script>
+        $('#modal-image').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var src = button.data('src') // Extract info from data-* attributes
+            var modal = $(this)
+            modal.find('#modal-image-placeholder').attr('src', src)
+        })
+    </script>
+
 @endsection

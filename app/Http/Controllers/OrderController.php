@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
+use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
 
 class OrderController extends Controller
@@ -229,7 +230,8 @@ class OrderController extends Controller
     public function pesanan()
     {
         $user_id = Auth::id();
-        $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->get();
+        $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->orderByDesc('created_at')
+            ->paginate(10);
 
         return view('customer.pesanan', ['orders' => $orders]);
     }
@@ -246,34 +248,44 @@ class OrderController extends Controller
     {
         $order = OrderProduct::where('id_order', $id_order)->distinct()->get(['id_pesanan']);
         $order_product = OrderProduct::where('id_order', $id_order)->get();
-        $detail = Order::where('id', $id_order)->first(['status', 'total_price', 'payment_method']);
+        $detail = Order::where('id', $id_order)->first(['status', 'total_price', 'payment_method', 'id']);
+        $id_pesanan = $order[0]->id_pesanan;
+        $barcode = DNS1D::getBarcodeHTML($id_pesanan, "C128");
 
-        return view('customer.unggah_tf', compact('order', 'order_product', 'detail'));
+
+        return view('customer.unggah_tf', compact('order', 'order_product', 'detail', 'barcode'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_order)
     {
-        $order = Order::findOrFail($id);
-
+        // Validasi file bukti pembayaran
         $request->validate([
-            'bukti_pembayaran' => 'image|mimes:jpeg,png,jpg|max:3048',
+            'bukti_pembayaran' => 'required|file|max:2048',
         ]);
 
-        // Jika ada file gambar yang diupload
-        if ($request->hasFile('bukti_pembayaran')) {
-            $image = $request->file('bukti_pembayaran');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('/storage/bukti_pembayaran'), $imageName);
+        // Get file from request
+        $bukti_pembayaran = $request->file('bukti_pembayaran');
 
-            // Update kolom bukti_pembayaran dalam tabel orders
-            $order->bukti_pembayaran = $imageName;
-        }
+        // Get the authenticated user
+        $user = Auth::user();
 
-        dd($order);
+        // Get the order
+        $order = Order::findOrFail($id_order);
 
-        $order->update($request->all());
+        // Generate unique filename for the file
+        $filename = $order->id_pesanan . '_' . $user->id . '.' . $bukti_pembayaran->getClientOriginalExtension();
 
-        return redirect()->route('orders.index')
-            ->with('success', 'Order updated successfully');
+
+        // Save the file to storage/app/public/bukti_pembayaran/
+        $bukti_pembayaran->move(public_path('/storage/bukti_pembayaran'), $filename);
+        // $bukti_pembayaran->storeAs('storage/bukti_pembayaran', $filename);
+
+        // Update bukti_pembayaran field in Order table
+        Order::where('id', $id_order)->update([
+            'bukti_pembayaran' => $filename,
+        ]);
+
+        // Redirect back with success message
+        return redirect()->route('detail.pesanan', ['id' => $id_order])->with('success', 'Bukti pembayaran berhasil diunggah!. Proses verifikasi pembayaran 1x24 jam');
     }
 }

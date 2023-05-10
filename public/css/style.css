@@ -1740,7 +1740,8 @@ input[type=tel]:focus {
 }
 
 .dashboard-user-profile .user-img {
-    width: 180px;
+    width: 200px;
+    height: 200px;
 }
 
 .dashboard-user-profile .user-profile-list {

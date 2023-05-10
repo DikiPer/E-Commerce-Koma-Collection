@@ -1,9 +1,30 @@
 @extends('layouts.app')
 @section('content')
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">Detail Pesanan</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ url('/') }}">Home</a></li>
+                            <li><a href="{{ url('/pesanan') }}">Pesanan</a></li>
+                            <li class="active">Detail Pesanan </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="page-wrapper">
         <div class="cart shopping">
             <div class="container">
                 <div class="row">
+                    @if (session('success'))
+                        <div class="alert alert-success text-center">
+                            <strong>{{ session('success') }}</strong>
+                        </div>
+                    @endif
                     <div class="col-md-8 col-md-offset-2">
                         <div class="block">
                             <div class="product-list">
@@ -51,9 +72,8 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td></td>
                                                 <td>Total</td>
-
+                                                <td></td>
                                                 <td>{{ $totalQuantity }} Pcs</td>
                                                 <td>IDR {{ number_format($totalPrice) }}</td>
                                                 <td></td>
@@ -61,21 +81,10 @@
                                             </tr>
                                         </tfoot>
                                     </table>
-                                    @php
-                                        $lastOrder = \App\Models\Order::where('id_user', Auth::id())
-                                            ->latest()
-                                            ->first();
-                                    @endphp
-                                    @if ($lastOrder && $lastOrder->status == 'paid')
-                                        <!-- Tampilkan teks Kembali -->
-                                        <p>Kembali</p>
-                                    @else
-                                        <!-- Tampilkan tombol Unggah Bukti Pembayaran -->
-                                        <a href="{{ url('/unggah_bukti_bayar/edit', $id_order) }}"
-                                            class="btn btn-main pull-right">Unggah
-                                            Bukti
-                                            Pembayaran</a>
-                                    @endif
+                                    <a href="{{ url('/unggah_bukti_bayar/edit', $id_order) }}"
+                                        class="btn btn-main pull-right">Unggah
+                                        Bukti
+                                        Pembayaran</a>
                             </div>
                         </div>
                     </div>
