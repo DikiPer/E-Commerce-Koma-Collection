@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class HomeAdminController extends Controller
@@ -79,5 +80,28 @@ class HomeAdminController extends Controller
 
 
         return response()->download($pathToFile, 'orders' . '-' . $date . '.xlsx', $headers);
+    }
+
+    public function export_order_pdf($id_order)
+    {
+        $date = date('dmY');
+        $order = Order::where($id_order);
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="order.xlsx"',
+        ];
+        // menuju file yang akan diunduh
+        $pathToFile = (new FastExcel($order))->export(storage_path('app/order.xlsx'));
+
+
+        return response()->download($pathToFile, 'orders' . '-' . $date . '.xlsx', $headers);
+    }
+
+    public function message()
+    {
+        $message = Message::all();
+
+        return view('admin.message', compact('message'));
     }
 }

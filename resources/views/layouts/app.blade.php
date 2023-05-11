@@ -273,9 +273,7 @@
                                         <ul>
                                             <li class="dropdown-header">Bottom</li>
                                             <li role="separator" class="divider"></li>
-                                            <li><a href="product-single.html">Kulot</a></li>
-                                            <li><a href="shop-sidebar.html">Basic</a></li>
-
+                                            <li><a href="{{ url('/shop') }}">Kulot</a></li>
                                         </ul>
                                     </div>
 
@@ -321,7 +319,7 @@
                                         <ul>
                                             <li class="dropdown-header">Service</li>
                                             <li role="separator" class="divider"></li>
-                                            <li><a href="dashboard.html">How to order</a></li>
+                                            <li><a href="{{ url('/howtoorder') }}">How to order</a></li>
                                             <li><a href="order.html">Shipping</a></li>
                                             <li><a href="address.html">Terms & Condition</a></li>
                                             <li><a href="{{ url('/faq') }}">FAQ</a></li>
@@ -330,8 +328,9 @@
 
                                     <!-- Mega Menu -->
                                     <div class="col-sm-3 col-xs-12">
-                                        <a href="{{ url('shop.shop') }}">
-                                            <img class="img-responsive" src="images/shop/kc.png" alt="menu image" />
+                                        <a href="{{ url('/') }}">
+                                            <img class="img-responsive" src="{{ asset('images/shop/kc.png') }}"
+                                                alt="menu image" />
                                         </a>
                                     </div>
                                 </div><!-- / .row -->
@@ -353,38 +352,28 @@
             <div class="col-md-12">
                 <ul class="social-media">
                     <li>
-                        <a href="https://www.facebook.com/themefisher">
+                        <a href="https://www.facebook.com/profile.php?id=100084770293751&mibextid=ZbWKwL">
                             <i class="tf-ion-social-facebook"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="https://www.instagram.com/themefisher">
+                        <a href="https://instagram.com/collectionkoma?igshid=YmMyMTA2M2Y=">
                             <i class="tf-ion-social-instagram"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.twitter.com/themefisher">
-                            <i class="tf-ion-social-twitter"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.pinterest.com/themefisher/">
-                            <i class="tf-ion-social-pinterest"></i>
                         </a>
                     </li>
                 </ul>
                 <ul class="footer-menu text-uppercase">
                     <li>
-                        <a href="contact.html">CONTACT</a>
+                        <a href="{{ url('/contact') }}">CONTACT</a>
                     </li>
                     <li>
-                        <a href="shop.html">SHOP</a>
+                        <a href="{{ url('/shop') }}">SHOP</a>
                     </li>
                     <li>
-                        <a href="pricing.html">Pricing</a>
+                        <a href="{{ url('/onsale') }}">Sale</a>
                     </li>
                     <li>
-                        <a href="contact.html">PRIVACY POLICY</a>
+                        <a href="{{ url('/contact') }}">PRIVACY POLICY</a>
                     </li>
                 </ul>
                 <p class="copyright-text">Copyright &copy;2023, Designed &amp; Developed by <a

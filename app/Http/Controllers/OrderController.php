@@ -248,7 +248,7 @@ class OrderController extends Controller
     {
         $order = OrderProduct::where('id_order', $id_order)->distinct()->get(['id_pesanan']);
         $order_product = OrderProduct::where('id_order', $id_order)->get();
-        $detail = Order::where('id', $id_order)->first(['status', 'total_price', 'payment_method', 'id']);
+        $detail = Order::where('id', $id_order)->first(['status', 'total_price', 'payment_method', 'id', 'shippingserve', 'shippingcost']);
         $id_pesanan = $order[0]->id_pesanan;
         $barcode = DNS1D::getBarcodeHTML($id_pesanan, "C128");
 

@@ -25,6 +25,8 @@
                                 <p style="margin-bottom: -1px">Price : IDR {{ number_format($data->price) }}</p>
                                 <p>Quantity : {{ $data->qty }} Pcs</p>
                             @endforeach
+                            <h6>Pengiriman : {{ $detail->shippingserve }}</h6>
+                            <h6>Ongkir : IDR {{ number_format($detail->shippingcost) }}</h6>
                             <h5>Total : IDR {{ number_format($detail->total_price) }}</h5>
                             @php
                                 $payment = $detail->payment_method;
@@ -40,21 +42,27 @@
                                 }
                             @endphp
                             <h6>Payment Method : {{ $payment_text }}</h6>
-                            <div class="form-group">
-                                <input type="file" name="bukti_pembayaran" class="form-control-file">
-                            </div>
-                            <p class="mt-20 text-center" style="color: red"> *Ukuran foto maksimal 2mb</p>
-                            <p class="mt-20 text-center" style="color: red; margin-top: -20px; margin-bottom: -10px"> *File
-                                yang diunggah berupa
-                                foto atau screenshot
-                            </p>
+                            @if ($detail->status == 'unpaid')
+                                <div class="form-group">
+                                    <input type="file" name="bukti_pembayaran" class="form-control-file">
+                                </div>
+                                <p class="mt-20 text-center" style="color: red"> *Ukuran foto maksimal 2mb</p>
+                                <p class="mt-20 text-center" style="color: red; margin-top: -20px; margin-bottom: -10px">
+                                    *File
+                                    yang diunggah berupa
+                                    foto atau screenshot
+                                </p>
+
                     </div>
                     <div class="text-center">
                         <button type="submit" name="submit" class="btn btn-main text-center"
                             style="margin-bottom: 30px; margin-top: -30px">Unggah</button>
                     </div>
                     </form>
-
+                @else
+                    <h5 class="text-center" style="color: red">Status pembayaran sudah diverifikasi.</h5>
+                    <a href="{{ url('/pesanan') }}" class="btn btn-main text-white" style="color: ">Kembali</a>
+                    @endif
                 </div>
             </div>
         </div>

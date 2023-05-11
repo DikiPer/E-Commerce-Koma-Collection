@@ -44,6 +44,7 @@ Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('/coomingsoon', [HomeController::class, 'coomingsoon'])->name('coomingsoon');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/detail_product/{id}', [HomeController::class, 'details'])->name('detail.product');
+Route::get('/howtoorder', [HomeController::class, 'howtoorder'])->name('howtoorder');
 
 Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::get('/dashboard', [HomeAdminController::class, 'index']);
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::patch('/user_order/update/{id}', [PesananController::class, 'update'])->name('update.pesanan');
     Route::get('/detail_order/{id}', [HomeAdminController::class, 'detail_order'])->name('detail.order');
     Route::get('/generate/pdf/{id}', [PesananController::class, 'generatePDF'])->name('export.pdf');
+    Route::get('/export/order/', [HomeAdminController::class, 'export_order_pdf'])->name('exportorder.pdf');
 
     // sales //
     Route::get('/sales_admin', [HomeAdminController::class, 'sales'])->name('sales.admin');
@@ -131,6 +133,9 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     // Newsletter //
     Route::post('/subscribe', [NewsLetterController::class, 'store'])->name('subscribe');
     // End newsletter
+
+    // Contact us //
+    Route::post('/message', [HomeController::class, 'store'])->name('message');
 });
 
 

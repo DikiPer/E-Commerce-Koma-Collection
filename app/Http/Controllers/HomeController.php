@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Wishlist;
@@ -47,22 +48,27 @@ class HomeController extends Controller
 
     public function about()
     {
-        return view('about');
+        return view('pages.about');
     }
 
     public function contact()
     {
-        return view('contact');
+        return view('pages.contact');
     }
 
     public function faq()
     {
-        return view('faq');
+        return view('pages.faq');
+    }
+
+    public function howtoorder()
+    {
+        return view('pages.howtoorder');
     }
 
     public function coomingsoon()
     {
-        return view('coomingsoon');
+        return view('pages.coomingsoon');
     }
 
     public function shop(Request $request)
@@ -86,5 +92,24 @@ class HomeController extends Controller
         $product = Product::findOrFail($id);
         $all = Product::orderBy('id', 'desc')->take(5)->get();
         return view('detail_product', compact('product', 'all'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:50|',
+            'email' => 'required|email|unique:messages,email',
+            'subject' => 'required|max:255',
+            'message' => 'required|max:255'
+        ]);
+
+        $message = Message::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'subject' => $request->input('subject'),
+            'message' => $request->input('message')
+        ]);
+
+        return redirect()->back()->with('success', 'Terima kasih atas pesan atau saran yang telah diberikan.');
     }
 }

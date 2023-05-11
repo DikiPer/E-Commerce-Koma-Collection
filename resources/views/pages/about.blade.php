@@ -20,38 +20,36 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img class="img-responsive" src="images/about/about.jpg">
+                    <img class="img-responsive" src="{{ asset('images/shop/kc.png') }}">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="mt-40">About Our Shop</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius enim, accusantium repellat ex autem
-                        numquam iure officiis facere vitae itaque.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam qui vel cupiditate exercitationem, ea
-                        fuga est velit nulla culpa modi quis iste tempora non, suscipit repellendus labore voluptatem dicta
-                        amet?</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam qui vel cupiditate exercitationem, ea
-                        fuga est velit nulla culpa modi quis iste tempora non, suscipit repellendus labore voluptatem dicta
-                        amet?</p>
-                    <a href="contact.html" class="btn btn-main mt-20">Download Company Profile</a>
+                    <h2 class="mt-40">Tentang KOMA Collection</h2>
+                    <p><a href="{{ url('/') }}">KOMA Collection</a> adalah sebuah toko penjualan baju yang mengusung
+                        tema santai, dimana kualitas produk yang baik adalah prioritas utama bagi kami.</p>
+                    <p>Toko ini sudah berjalan sekitar 1 tahun berjalan dengan konsistenitas produksi dengan kualitas yang
+                        baik dari segi bahan, jahitan maupun model.</p>
+                    <p>Produk - produk unggulan yang kami jual bisa langsung dilihat di halaman <a
+                            href="{{ url('/shop') }}">Shop</a>.</p>
+                    <a href="" class="btn btn-main mt-20">Download Company Profile</a>
                 </div>
             </div>
             <div class="row mt-40">
                 <div class="col-md-3 text-center">
-                    <img src="images/about/awards-logo.png">
+                    <img src="{{ asset('images/shop/category/category-1.jpg') }}" width="100%">
                 </div>
                 <div class="col-md-3 text-center">
-                    <img src="images/about/awards-logo.png">
+                    <img src="{{ asset('images/shop/category/category-2.jpg') }}" width="100%">
                 </div>
                 <div class="col-md-3 text-center">
-                    <img src="images/about/awards-logo.png">
+                    <img src="{{ asset('images/shop/category/category-3.jpg') }}" width="100%">
                 </div>
                 <div class="col-md-3 text-center">
-                    <img src="images/about/awards-logo.png">
+                    <img src="{{ asset('images/shop/category/category-4.jpg') }}" width="100%">
                 </div>
             </div>
         </div>
     </section>
-    <section class="team-members ">
+    {{-- <section class="team-members ">
         <div class="container">
             <div class="row">
                 <div class="title">
@@ -89,10 +87,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
 
-    <div class="section video-testimonial bg-1 overly-white text-center mt-50">
+    <div class="section video-testimonial bg-1 overly-white text-center mt-50" style="margin-bottom: 40px">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
