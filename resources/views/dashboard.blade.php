@@ -19,8 +19,9 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Products</div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><a
+                                        href="{{ url('/product') }}">
+                                        Products</a></div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $product_count }} Qty</div>
                             </div>
                             <div class="col-auto">
@@ -38,7 +39,8 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Users</div>
+                                    <a href="{{ url('/user') }}" style="color: rgb(41, 132, 41)">Users</a>
+                                </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $user_count }} Prsn</div>
                             </div>
                             <div class="col-auto">
@@ -55,11 +57,14 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Sales
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><a
+                                        href="{{ url('/sales_admin') }}" style="color: rgb(101, 222, 243)">Sales</a>
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">120 Pcs</div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $order_product_count }}
+                                            Pcs
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -77,9 +82,10 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Orders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18 Qty</div>
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"><a
+                                        href="{{ url('/order_admin') }}" style="color: rgb(255, 196, 0)">
+                                        Orders</a></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $order_count }} Orders</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-shopping-basket fa-2x text-gray-300"></i>

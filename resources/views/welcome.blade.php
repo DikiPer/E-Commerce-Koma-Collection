@@ -182,9 +182,9 @@
                                         <ul>
                                             <li class="dropdown-header">Top Women</li>
                                             <li role="separator" class="divider"></li>
-                                            <li><a href="shop.html">Blouse</a></li>
-                                            <li><a href="checkout.html">Tunik</a></li>
-                                            <li><a href="cart.html">Kemeja</a></li>
+                                            <li><a href="{{ url('/shop') }}">Blouse</a></li>
+                                            <li><a href="{{ url('/shop') }}">Tunik</a></li>
+                                            <li><a href="{{ url('/shop') }}">Kemeja</a></li>
                                         </ul>
                                     </div>
 
@@ -193,9 +193,7 @@
                                         <ul>
                                             <li class="dropdown-header">Bottom</li>
                                             <li role="separator" class="divider"></li>
-                                            <li><a href="product-single.html">Kulot</a></li>
-                                            <li><a href="shop-sidebar.html">Basic</a></li>
-
+                                            <li><a href="{{ url('/shop') }}">Kulot</a></li>
                                         </ul>
                                     </div>
 

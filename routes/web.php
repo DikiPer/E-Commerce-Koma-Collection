@@ -15,6 +15,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WishListController;
 use App\Http\Controllers\HomeAdminController;
+use App\Http\Controllers\NewsLetterController;
 use App\Models\OrderProduct;
 use App\Models\User;
 
@@ -63,8 +64,26 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::get('/user_order', [PesananController::class, 'index'])->name('index');
     Route::get('/user_order/edit/{id}', [PesananController::class, 'edit'])->name('edit.pesanan');
     Route::patch('/user_order/update/{id}', [PesananController::class, 'update'])->name('update.pesanan');
-    Route::get('/detail_order/{id}', [PesananController::class, 'details'])->name('detail.order');
+    Route::get('/detail_order/{id}', [HomeAdminController::class, 'detail_order'])->name('detail.order');
     Route::get('/generate/pdf/{id}', [PesananController::class, 'generatePDF'])->name('export.pdf');
+
+    // sales //
+    Route::get('/sales_admin', [HomeAdminController::class, 'sales'])->name('sales.admin');
+    Route::get('/detail_sales/{id}', [HomeAdminController::class, 'detail_sales'])->name('detail.sales');
+    // End sales //
+
+    // Export Excel //
+    Route::get('/export/sales/excel', [HomeAdminController::class, 'export'])->name('export.excel');
+    Route::get('/export/order/excel', [HomeAdminController::class, 'export_order'])->name('export.order');
+    // End Excel //
+
+    // Order //
+    Route::get('/order_admin', [HomeAdminController::class, 'order'])->name('order.admin');
+    // End Order //
+
+    // Subscribe //
+    Route::get('/newsletter', [NewsLetterController::class, 'index'])->name('subscribe.index');
+    // End subscribe //
 });
 
 // USER //
@@ -101,13 +120,19 @@ Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::get('/wishlist', [WishListController::class, 'index'])->name('wishlist.index');
     Route::delete('/wishlist/{id}', [WishListController::class, 'destroy'])->name('wishlist.destroy');
     Route::post('/add_wishlist/{id}', [WishListController::class, 'store'])->name('wishlist.store');
-});
-// end wishlist //
+    // end wishlist //
 
-// Detail User //
-Route::get('/detail_user/{id}', [UserController::class, 'detail_user'])->name('detail.profile');
-Route::get('/edit_user/{id}', [UserController::class, 'edit_user'])->name('edit.profile');
-Route::patch('/edit_user/update/{id}', [UserController::class, 'update_profile'])->name('update.profile');
+    // Detail User //
+    Route::get('/detail_user/{id}', [UserController::class, 'detail_user'])->name('detail.profile');
+    Route::get('/edit_user/{id}', [UserController::class, 'edit_user'])->name('edit.profile');
+    Route::patch('/edit_user/update/{id}', [UserController::class, 'update_profile'])->name('update.profile');
     // End User //
+
+    // Newsletter //
+    Route::post('/subscribe', [NewsLetterController::class, 'store'])->name('subscribe');
+    // End newsletter
+});
+
+
 
     // END USER //

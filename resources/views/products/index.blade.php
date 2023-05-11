@@ -29,7 +29,8 @@
              </div>
              <div class="card-body">
                  <div class="table-responsive">
-                     <table id="dataProduct" class="table table-striped table-bordered" width="100%">
+                     <table id="dataProduct" class="table table-striped table-bordered" width="100%"
+                         style="font-size: 13px">
                          <thead>
                              <tr>
                                  <th>No</th>
@@ -37,6 +38,7 @@
                                  <th>Price</th>
                                  <th>Code</th>
                                  <th>Description</th>
+                                 <th>Stock</th>
                                  <th>Image</th>
                                  <th>Action</th>
                                  <th>Action</th>
@@ -49,6 +51,7 @@
                                  <th>Price</th>
                                  <th>Code</th>
                                  <th>Description</th>
+                                 <th>Stock</th>
                                  <th>Image</th>
                                  <th>Action</th>
                                  <th>Action</th>
@@ -61,7 +64,9 @@
                                      <td>{{ $product->name }}</td>
                                      <td>{{ $product->price }}</td>
                                      <td>{{ $product->code }}</td>
-                                     <td>{{ $product->description }}</td>
+                                     <td>{{ Str::limit($product->description, 90) }}</td>
+                                     <td>{{ $product->stock }}</td>
+
                                      <td><img src="{{ asset('/storage/product/' . $product->images) }}" width="100"
                                              alt="{{ $product->name }}"></td>
                                      <td>

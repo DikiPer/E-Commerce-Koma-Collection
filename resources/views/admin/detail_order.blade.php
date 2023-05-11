@@ -3,9 +3,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
         <!-- Page Heading -->
-        <a href="{{ url('/generate/pdf', $id_order) }}" target="_blank"
-            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="float: right; margin-right: 20px"><i
-                class="fas fa-print fa-sm text-white-50"></i> Export PDF</a>
         <h1 class="h3 mb-2 text-gray-800">Detail Orders</h1>
         @if (session('success'))
             <div class="alert alert-success text-center">
@@ -26,7 +23,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Data Detail Order</h6>
+                <a href="{{ url('/order_admin') }}"><i class="fa fa-chevron-left"></i> Back</a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

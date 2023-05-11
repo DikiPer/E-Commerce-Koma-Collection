@@ -63,7 +63,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item {{ Request::is('product', 'add_product', 'onsale', 'category') ? 'active' : '' }}">
+            <li class="nav-item {{ Request::is('product', 'add_product', 'sale') ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
@@ -73,7 +73,6 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Management:</h6>
                         <a class="collapse-item" href="{{ url('/product') }}">Products</a>
-                        <a class="collapse-item" href="{{ url('/category') }}">Category</a>
                         <a class="collapse-item" href="{{ url('/sale') }}">On Sale</a>
                     </div>
                 </div>
@@ -91,8 +90,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Management Users:</h6>
                         <a class="collapse-item" href="{{ url('/user') }}">Users</a>
-                        <a class="collapse-item" href="{{ url('message') }}">Message</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                        <a class="collapse-item" href="{{ url('/newsletter') }}">Subscribe Letter</a>
                     </div>
                 </div>
             </li>
@@ -105,32 +103,16 @@
                 Transactions
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Management</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Transactions</h6>
-                        <a class="collapse-item" href="{{ url('/user_order') }}">Orders</a>
-                        <a class="collapse-item" href="register.html">Payment</a>
-                    </div>
-                </div>
-            </li>
-
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+            <li class="nav-item {{ Request::is('sales_admin') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/sales_admin') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Sales</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li class="nav-item {{ Request::is('order_admin') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/order_admin') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Orders</span></a>
             </li>
@@ -206,7 +188,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">+3</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -427,6 +409,20 @@
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+
+        <!-- Skrip JavaScript untuk badge -->
+        <script>
+            function updateOrderBadge() {
+                // Query untuk mengambil jumlah data baru pada tabel Order
+                $.get('/orders/new', function(data) {
+                    var count = data.count;
+                    $('.badge-counter').text('+' + count);
+                });
+            }
+
+            // Jalankan fungsi updateOrderBadge() setiap 5 detik
+            setInterval(updateOrderBadge, 5000);
+        </script>
 
         <script>
             $(document).ready(function() {

@@ -258,21 +258,41 @@
                 <img src="{{ asset('images/slider/slider-10.jpg') }}" alt="" width="100%">
             </div>
             <div class="col-md-6 text-center">
+                @if (session('success'))
+                    <div class="alert" style="color: white; margin-bottom: -25px">
+                        {{ session('success') }}
+                        <p style="color: white">Gunakan kode promo <strong>KOMA-17052023</strong> untuk mendapatkan
+                            gratis ongkir pada pembelian pertama Anda!</p>
+                    </div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert" style="color: red; margin-bottom: -25px">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="title" style="padding-top: 50px">
                     <h1>SUBSCRIBE TO NEWSLETTER</h1>
                     <p style="color: #FEFCF3; font-size: 16px">KLAIM GRATIS ONGKIR PERTAMAMU.</p>
                 </div>
                 <div class="col-lg-6 col-md-offset-3">
                     <div class="input-group subscription-form" style="width: 278.5px; text-align: center;">
-                        <input type="text" class="form-control" placeholder="Enter Your Email Address">
+                        <form action="{{ route('subscribe') }}" method="post">
+                            @csrf
+                            @method('POST')
+                            <input type="email" name="email" class="form-control"
+                                placeholder="Enter Your Email Address">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-offset-3 text-center">
                     <div class="input-group subscription-form">
                         <span class="input-group-btn">
-                            <button class="btn btn-main" type="button">Subscribe
+                            <button class="btn btn-main" type="submit">Subscribe
                                 Now!</button>
                         </span>
+                        </form>
                     </div>
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
