@@ -2,8 +2,9 @@
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-        <a href="{{ url('/export/order/') }}" target="_blank" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-            style="float: right; margin-right: 20px"><i class="fas fa-print fa-sm text-white-50"></i> Export PDF</a>
+        <a href="{{ url('/export/order/' . $order->id) }}" target="_blank"
+            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="float: right; margin-right: 20px"><i
+                class="fas fa-print fa-sm text-white-50"></i> Cetak Resi</a>
         <!-- Page Heading -->
         <h1 class="h3 mb-2 text-gray-800">Detail Orders</h1>
         @if (session('success'))

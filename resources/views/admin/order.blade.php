@@ -94,7 +94,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <img id="modal-image-placeholder" src="" alt="">
+                        <img id="modal-image-placeholder"
+                            src="{{ asset('/storage/bukti_pembayaran/' . $product->bukti_pembayaran) }}" width="100%"
+                            alt="">
                     </div>
                 </div>
             </div>

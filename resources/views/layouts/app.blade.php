@@ -320,8 +320,7 @@
                                             <li class="dropdown-header">Service</li>
                                             <li role="separator" class="divider"></li>
                                             <li><a href="{{ url('/howtoorder') }}">How to order</a></li>
-                                            <li><a href="order.html">Shipping</a></li>
-                                            <li><a href="address.html">Terms & Condition</a></li>
+                                            <li><a href="{{ url('/tmc') }}">Terms & Condition</a></li>
                                             <li><a href="{{ url('/faq') }}">FAQ</a></li>
                                         </ul>
                                     </div>

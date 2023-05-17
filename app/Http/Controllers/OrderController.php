@@ -232,6 +232,7 @@ class OrderController extends Controller
         $user_id = Auth::id();
         $orders = Order::where('id_user', $user_id)->orderByDesc('created_at')->orderByDesc('created_at')
             ->paginate(10);
+        // dd($orders);
 
         return view('customer.pesanan', ['orders' => $orders]);
     }

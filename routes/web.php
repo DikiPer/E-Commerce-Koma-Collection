@@ -45,9 +45,15 @@ Route::get('/coomingsoon', [HomeController::class, 'coomingsoon'])->name('coomin
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/detail_product/{id}', [HomeController::class, 'details'])->name('detail.product');
 Route::get('/howtoorder', [HomeController::class, 'howtoorder'])->name('howtoorder');
+Route::get('/tmc', [HomeController::class, 'tmc'])->name('tmc');
 
 Route::group(['middleware' => ['auth', 'level:admin']], function () {
+
+    // Dashboard //
     Route::get('/dashboard', [HomeAdminController::class, 'index']);
+    // End Dashboard //
+
+    // Data Product //
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/add_product', [ProductController::class, 'create'])->name('product.create');
     Route::post('/add', [ProductController::class, 'store'])->name('product.store');
@@ -55,11 +61,15 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::patch('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::get('/sale', [ProductController::class, 'discountedProducts'])->name('discounted.products');
+    // End Product //
+
+    // Data User //
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::get('/user/detail/{id}', [UserController::class, 'show'])->name('user.show');
     Route::get('/my_profile', [UserController::class, 'profile'])->name('profile.show');
+    // End Data User //
 
     // Tabel Order //
     Route::get('/user_order', [PesananController::class, 'index'])->name('index');
@@ -67,9 +77,11 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::patch('/user_order/update/{id}', [PesananController::class, 'update'])->name('update.pesanan');
     Route::get('/detail_order/{id}', [HomeAdminController::class, 'detail_order'])->name('detail.order');
     Route::get('/generate/pdf/{id}', [PesananController::class, 'generatePDF'])->name('export.pdf');
-    Route::get('/export/order/', [HomeAdminController::class, 'export_order_pdf'])->name('exportorder.pdf');
+    Route::get('/export/order/{id}', [HomeAdminController::class, 'export_order_pdf'])->name('exportorder.pdf');
+    Route::get('/order_admin', [HomeAdminController::class, 'order'])->name('order.admin');
+    // End Order //
 
-    // sales //
+    // Sales //
     Route::get('/sales_admin', [HomeAdminController::class, 'sales'])->name('sales.admin');
     Route::get('/detail_sales/{id}', [HomeAdminController::class, 'detail_sales'])->name('detail.sales');
     // End sales //
@@ -78,10 +90,6 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     Route::get('/export/sales/excel', [HomeAdminController::class, 'export'])->name('export.excel');
     Route::get('/export/order/excel', [HomeAdminController::class, 'export_order'])->name('export.order');
     // End Excel //
-
-    // Order //
-    Route::get('/order_admin', [HomeAdminController::class, 'order'])->name('order.admin');
-    // End Order //
 
     // Subscribe //
     Route::get('/newsletter', [NewsLetterController::class, 'index'])->name('subscribe.index');

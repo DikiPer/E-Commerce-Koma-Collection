@@ -112,4 +112,9 @@ class HomeController extends Controller
 
         return redirect()->back()->with('success', 'Terima kasih atas pesan atau saran yang telah diberikan.');
     }
+
+    public function tmc()
+    {
+        return view('pages.tmc');
+    }
 }

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Message;
 use App\Models\Product;
+use Milon\Barcode\DNS1D;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Message;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class HomeAdminController extends Controller
 {
@@ -40,6 +42,7 @@ class HomeAdminController extends Controller
     public function order()
     {
         $order = Order::all();
+
         return view('admin.order', compact('order'));
     }
 
@@ -82,20 +85,15 @@ class HomeAdminController extends Controller
         return response()->download($pathToFile, 'orders' . '-' . $date . '.xlsx', $headers);
     }
 
-    public function export_order_pdf($id_order)
+    public function export_order_pdf($id)
     {
-        $date = date('dmY');
-        $order = Order::where($id_order);
+        $order = Order::findOrFail($id);
+        $order_product = OrderProduct::where('id_order', $id)->get();
+        $id_pesanan = $order->id_pesanan;
+        $barcode = DNS1D::getBarcodeHTML($id_pesanan, "C128");
+        $pdf = FacadePdf::loadView('admin.order_pdf', ['order' => $order, 'barcode' => $barcode, 'order_product' => $order_product]);
 
-        $headers = [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment; filename="order.xlsx"',
-        ];
-        // menuju file yang akan diunduh
-        $pathToFile = (new FastExcel($order))->export(storage_path('app/order.xlsx'));
-
-
-        return response()->download($pathToFile, 'orders' . '-' . $date . '.xlsx', $headers);
+        return $pdf->stream('INVOICE' . '-' . $order->id_pesanan . '-' . $order->nama . '.pdf');
     }
 
     public function message()

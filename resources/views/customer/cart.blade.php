@@ -21,32 +21,31 @@
         $totalWeight = 0;
     @endphp
     @if (session('cart'))
-        @foreach ($cart as $id => $details)
-            @php
-                $total += $details['price'] * $details['quantity'];
-                $totalQuantity += $details['quantity'];
-                $totalWeight += $details['berat'] * $details['quantity'];
-            @endphp
-            <div class="page-wrapper">
-
-                <div class="cart shopping">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-8 col-md-offset-2">
-                                <div class="block">
-                                    <div class="product-list">
-                                        <form method="post">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="">Images | Item Name</th>
-                                                        <th class="">Quantity</th>
-                                                        <th class="">Item Price</th>
-                                                        <th class="">Weight</th>
-                                                        <th class="">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+        <div class="page-wrapper">
+            <div class="cart shopping">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="block">
+                                <div class="product-list">
+                                    <form method="post">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="">Images | Item Name</th>
+                                                    <th class="">Quantity</th>
+                                                    <th class="">Item Price</th>
+                                                    <th class="">Weight</th>
+                                                    <th class="">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($cart as $id => $details)
+                                                    @php
+                                                        $total += $details['price'] * $details['quantity'];
+                                                        $totalQuantity += $details['quantity'];
+                                                        $totalWeight += $details['berat'] * $details['quantity'];
+                                                    @endphp
                                                     <tr class="">
                                                         <td class="">
                                                             <div class="product-info">
@@ -67,30 +66,39 @@
                                                                 href="{{ route('cart.remove', $id) }}">Remove</a>
                                                         </td>
                                                     </tr>
-        @endforeach
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>
-                    <h4>Total</h4>
-                </td>
-                <td>{{ $totalQuantity }} Pcs</td>
-                <td>
-                    IDR {{ number_format($total) }}
-                </td>
-                <td>{{ number_format($totalWeight) }} Gram</td>
-            </tr>
-        </tfoot>
-        </table>
-        @if (session('cart'))
-            @if (count(session('cart')) > 0)
-                <!-- Tampilkan tombol checkout -->
-                <a href="{{ url('/checkout') }}" class="btn btn-main pull-right">Checkout
-                </a>
-            @endif
-        @else
-            <a href="{{ url('/onsale') }}" class="btn btn-main pull-right">Shop Now</a>
-        @endif
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>
+                                                        <h4>Total</h4>
+                                                    </td>
+                                                    <td>{{ $totalQuantity }} Pcs</td>
+                                                    <td>
+                                                        IDR {{ number_format($total) }}
+                                                    </td>
+                                                    <td>{{ number_format($totalWeight) }} Gram</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        @if (session('cart'))
+                                            @if (count(session('cart')) > 0)
+                                                <!-- Tampilkan tombol checkout -->
+                                                <a href="{{ url('/checkout') }}" class="btn btn-main pull-right">Checkout
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a href="{{ url('/onsale') }}" class="btn btn-main pull-right">Shop Now</a>
+                                        @endif
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     @else
         <section class="empty-cart page-wrapper">
             <div class="container">
@@ -100,20 +108,11 @@
                             <i class="tf-ion-ios-cart-outline"></i>
                             <h2 class="text-center">Your cart is currently empty.
                             </h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Inventore, sed.</p>
-                            <a href="{{ url('/shop') }}" class="btn btn-main mt-20">Return to
-                                shop</a>
+                            <p>Pesan sekarang dan dapatkan promo gratis ongkir disetiap pembelian pertama.</p>
+                            <a href="{{ url('/shop') }}" class="btn btn-main mt-20">Shop now</a>
                         </div>
                     </div>
                 </div>
         </section>
     @endif
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
 @endsection
