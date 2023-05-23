@@ -41,13 +41,6 @@ class OrderController extends Controller
         $city = City::where('province_id', $id)->pluck('name', 'city_id');
         return response()->json($city);
     }
-    // public function check_ongkir(Request $request)
-    // {
-
-
-    //     dd($cost);
-    //     return response()->json($cost);
-    // }
 
     public function store(Request $request)
     {
@@ -166,8 +159,6 @@ class OrderController extends Controller
         // Simpan data ke dalam table order_products
         $cart = session()->get('cart');
         $id_order = Order::latest()->first();
-        // dd($id_order->id);
-        // dd($id_order);
         foreach ($cart as $detail) {
             $order_product = new OrderProduct;
             $order_product->id_user = $id_user;
@@ -180,6 +171,13 @@ class OrderController extends Controller
             $order_product->disc_price = NULL;
             $order_product->qty = $detail['quantity'];
             $order_product->price = $detail['price'];
+
+            // Mengurangi stok produk jika nilai kuantitas terisi
+            if ($detail['quantity'] > 0) {
+                $product = Product::find($detail['product_id']);
+                $product->stock -= $detail['quantity'];
+                $product->save();
+            }
 
             // dd($order_product);
             $order_product->save();

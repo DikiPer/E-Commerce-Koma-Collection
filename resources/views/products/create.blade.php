@@ -21,7 +21,8 @@
             <div class="row mb-5">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <strong>Name:</strong>
+                        <strong>Name:
+                        </strong>
                         <input type="text" name="name" class="form-control" placeholder="Name">
                     </div>
                 </div>

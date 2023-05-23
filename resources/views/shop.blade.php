@@ -19,8 +19,6 @@
             </div>
         </div>
     </section>
-
-
     <section class="products section">
         <div class="container">
             <div class="row">

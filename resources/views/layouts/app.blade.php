@@ -247,9 +247,14 @@
                         </li><!-- / Home -->
 
                         <!-- Sale -->
-                        <li class="dropdown ">
-                            <a href="{{ url('/on_sale') }}">Sale</a>
+                        <li class="dropdown">
+                            @if (auth()->check())
+                                <a href="{{ url('/on_sale') }}">Sale</a>
+                            @else
+                                <a href="{{ url('/onsale') }}">Sale</a>
+                            @endif
                         </li>
+
                         <!-- Elements -->
                         <li class="dropdown dropdown-slide">
                             <a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
