@@ -49,52 +49,36 @@
                                             alt="product-img" />
                                         <div class="preview-meta">
                                             <ul>
-                                                <li>
-                                                    <span data-toggle="modal"
-                                                        data-target="#product-modal-{{ $item->id }}">
-                                                        <i class="tf-ion-ios-search-strong"></i>
-                                                    </span>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('wishlist.store', $item->id) }}" class="btn-btn"
-                                                        onclick="event.preventDefault();
+                                                @if ($item->stock > 1)
+                                                    <li>
+                                                        <span data-toggle="modal"
+                                                            data-target="#product-modal-{{ $item->id }}">
+                                                            <i class="tf-ion-ios-search-strong"></i>
+                                                        </span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('wishlist.store', $item->id) }}" class="btn-btn"
+                                                            onclick="event.preventDefault();
                                                                      if(confirm('Masukan product kedalam wishlist ?')){
                                                                        document.getElementById('store-form-{{ $item->id }}').submit();
                                                                      }">
-                                                        <i class="tf-ion-ios-heart"></i>
-                                                    </a>
-                                                    <form id="store-form-{{ $item->id }}"
-                                                        action="{{ route('wishlist.store', $item->id) }}" method="POST"
-                                                        style="display: none;">
-                                                        @csrf
-                                                    </form>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ route('store', $item->id) }}"><i
-                                                            class="tf-ion-android-cart"></i></a>
-                                                </li>
+                                                            <i class="tf-ion-ios-heart"></i>
+                                                        </a>
+                                                        <form id="store-form-{{ $item->id }}"
+                                                            action="{{ route('wishlist.store', $item->id) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('store', $item->id) }}"><i
+                                                                class="tf-ion-android-cart"></i></a>
+                                                    </li>
+                                                @else
+                                                    <h3 style="color: white"> SOLD </h3>
+                                                @endif
                                             </ul>
                                         </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h4><a href="{{ route('detail.product', $item->id) }}">{{ $item->name }}</a>
-                                        </h4>
-                                        @if ($item->discount == 1)
-                                            <p class="price">IDR <s>{{ number_format($item->price) }}</s></p>
-                                        @else
-                                            <h5 class="price">IDR {{ number_format($item->price) }}</h5>
-                                        @endif
-                                        <?php
-                                        $normal = $item->price;
-                                        $discount = $item->discount_price;
-                                        $final = $normal - $discount;
-                                        ?>
-                                        @if ($item->discount == 1)
-                                            <h5 class="price" style="margin-top: -10px">IDR
-                                                {{ number_format($final) }}
-                                            </h5>
-                                        @endif
-
                                     </div>
                                 </div>
                             </div>

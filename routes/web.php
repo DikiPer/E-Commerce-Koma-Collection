@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth', 'level:admin']], function () {
     // End subscribe //
 });
 
+
 // USER //
 Route::group(['middleware' => ['auth', 'level:user']], function () {
     Route::get('/customer', [HomeController::class, 'showPage'])->name('customer.index');

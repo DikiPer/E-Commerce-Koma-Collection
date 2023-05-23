@@ -68,29 +68,33 @@
                                     alt="product-img" />
                                 <div class="preview-meta">
                                     <ul>
-                                        <li>
-                                            <span data-toggle="modal" data-target="#product-modal-{{ $data->id }}">
-                                                <i class="tf-ion-ios-search-strong"></i>
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('wishlist.store', $data->id) }}" class="btn-btn"
-                                                onclick="event.preventDefault();
+                                        @if ($data->stock > 1)
+                                            <li>
+                                                <span data-toggle="modal" data-target="#product-modal-{{ $data->id }}">
+                                                    <i class="tf-ion-ios-search-strong"></i>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('wishlist.store', $data->id) }}" class="btn-btn"
+                                                    onclick="event.preventDefault();
                                                              if(confirm('Masukan product kedalam wishlist ?')){
                                                                document.getElementById('store-form-{{ $data->id }}').submit();
                                                              }">
-                                                <i class="tf-ion-ios-heart"></i>
-                                            </a>
-                                            <form id="store-form-{{ $data->id }}"
-                                                action="{{ route('wishlist.store', $data->id) }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                            </form>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('store', $data->id) }}"><i
-                                                    class="tf-ion-android-cart"></i></a>
-                                        </li>
+                                                    <i class="tf-ion-ios-heart"></i>
+                                                </a>
+                                                <form id="store-form-{{ $data->id }}"
+                                                    action="{{ route('wishlist.store', $data->id) }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('store', $data->id) }}"><i
+                                                        class="tf-ion-android-cart"></i></a>
+                                            </li>
+                                        @else
+                                            <h3 style="color: white"> SOLD </h3>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -200,7 +204,8 @@
                             <div class="preview-meta">
                                 <ul>
                                     <li>
-                                        <a href="#!"><i class="tf-ion-social-instagram"></i></a>
+                                        <a href="https://instagram.com/collectionkoma?igshid=YmMyMTA2M2Y="><i
+                                                class="tf-ion-social-instagram"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -214,7 +219,8 @@
                             <div class="preview-meta">
                                 <ul>
                                     <li>
-                                        <a href="#!"><i class="tf-ion-social-instagram"></i></a>
+                                        <a href="https://instagram.com/collectionkoma?igshid=YmMyMTA2M2Y="><i
+                                                class="tf-ion-social-instagram"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -228,7 +234,8 @@
                             <div class="preview-meta">
                                 <ul>
                                     <li>
-                                        <a href="#!"><i class="tf-ion-social-instagram"></i></a>
+                                        <a href="https://instagram.com/collectionkoma?igshid=YmMyMTA2M2Y="><i
+                                                class="tf-ion-social-instagram"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -242,7 +249,8 @@
                             <div class="preview-meta">
                                 <ul>
                                     <li>
-                                        <a href="#!"><i class="tf-ion-social-instagram"></i></a>
+                                        <a href="https://instagram.com/collectionkoma?igshid=YmMyMTA2M2Y="><i
+                                                class="tf-ion-social-instagram"></i></a>
                                     </li>
                                 </ul>
                             </div>

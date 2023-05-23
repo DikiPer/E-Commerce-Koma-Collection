@@ -2226,7 +2226,7 @@ input[type=tel]:focus {
 }
 
 .bg-coming-soon {
-    background: url("../images/backgrounds/coming-soon-bg.jpg");
+    background: url("../images/backgrounds/bg-1.jpg");
     background-size: cover;
     height: 100vh;
 }
